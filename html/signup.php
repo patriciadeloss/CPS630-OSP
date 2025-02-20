@@ -45,7 +45,7 @@
                 <a href="signin.php">Sign in here</a>
             </div>
 
-            <button type="button">Sign In</button>
+            <button type="button">Sign Up</button>
         </form>
     </body>
 </html>
