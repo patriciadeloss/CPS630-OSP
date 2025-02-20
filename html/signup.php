@@ -11,11 +11,19 @@
     <body>
         <?php include("header.php"); ?>
         <form action="" method="POST" id="user-form">
-            <legend>Sign In</legend>
-
+            <legend>Sign Up</legend>
+            
             <div class="form-container">
                 <label for="">Username</label>
                 <input type="text" name="username" required>
+            </div>
+            <div class="form-container">
+                <label for="">Email</label>
+                <input type="text" name="email" required>
+            </div>
+            <div class="form-container">
+                <label for="">Phone Number</label>
+                <input type="text" name="phone_number">
             </div>
             <div class="form-container">
                 <label for="">Password</label>
@@ -33,8 +41,8 @@
                 </select>
             </div>
             <div class="form-container"> 
-                <p style="display: inline;">Don't have an account?</p>
-                <a href="signup.php">Sign up here</a>
+                <p style="display: inline;">Already have an account?</p>
+                <a href="signin.php">Sign in here</a>
             </div>
 
             <button type="button">Sign In</button>

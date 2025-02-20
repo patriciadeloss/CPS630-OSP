@@ -6,13 +6,14 @@ body {
 
 header { flex-shrink: 0; }
 
-form {
+#user-form {
     align-self: center;
     margin-top: auto;
     margin-bottom: auto;
     padding: 45px;
     background-color: white;
     border-radius: 5px;
+    box-shadow: 1px 0px 4px #dad8da;
 }
 
 form legend, .form-container, label {  padding: 5px; }
@@ -23,9 +24,9 @@ legend {
     font-weight: 700;
 }
 
-#sign-in label { align-self: left; }
+#user-form label { align-self: left; }
 
-#sign-in input {
+#user-form input {
     align-self: right;
     flex-grow: 1;
     padding: 10px;
@@ -38,12 +39,24 @@ legend {
     transition: border-bottom 0.7s;
 }
 
-#sign-in input:hover, #sign-in input:focus {
+#user-form input:hover, #user-form input:focus {
     border-bottom: 1.5px solid #56445D; 
 }
 
-#sign-in button {
-    margin-top: 15px;
+.form-container:last-of-type {
+    margin-top: 10px;
+}
+
+.form-container:last-of-type p {
+    color: grey;
+}
+
+.form-container:last-of-type p, .form-container:last-of-type a {
+    font-size: 12px;
+    font-style: italic;
+}
+
+#user-form button {
     padding: 6px;
     width: 100%;
     text-decoration: none;
@@ -58,7 +71,7 @@ legend {
     transition: background-color 1s;
 }
 
-#sign-in button:hover {
+#user-form button:hover {
     background-color: white;
     color: #8FBC94; 
 }
