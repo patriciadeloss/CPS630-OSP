@@ -1,6 +1,6 @@
 <header id="top-navbar">
     <div class="logo">
-        <img src="../img/dish.png" alt="Logo" class="logo-img">
+        <img src="../img/logo.png" alt="Logo" class="logo-img">
         Name
     </div>
 
