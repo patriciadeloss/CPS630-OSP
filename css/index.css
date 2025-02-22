@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
+/* Branch Selection */
+.branch-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+    background: #8FBC94;
+}
+
+.branch-container label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.branch-location select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* Product Grid */
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Product Card */
+.card {
+    background: #D5ECBA;
+    box-shadow: 0 2px 6px rgb(45, 44, 44);
+    text-align: left;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 250px;
+    max-width: 100%;
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    background: #fff;
+    border-radius: 5px;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #6DA34D;
+}
