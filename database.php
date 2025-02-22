@@ -30,8 +30,8 @@
         $sql = "CREATE TABLE IF NOT EXISTS Users (
             user_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             user_name VARCHAR(30) NOT NULL,
-            tel_no VARCHAR(30) NOT NULL,
-            email VARCHAR(50),
+            tel_no VARCHAR(12) NOT NULL,
+            email VARCHAR(254),
             address VARCHAR(100),
             city_code CHAR(3),
             login_id VARCHAR(30) UNIQUE NOT NULL,

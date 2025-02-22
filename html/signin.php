@@ -37,7 +37,7 @@
                 <a href="signup.php">Sign up here</a>
             </div>
 
-            <button type="button">Sign In</button>
+            <button type="submit" class="enable">Sign In</button>
         </form>
     </body>
 </html>

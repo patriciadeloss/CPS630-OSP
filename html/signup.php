@@ -6,6 +6,7 @@
         <title>Online Web Service Platform</title>
         <link rel="stylesheet" href="../css/base-style.css">
         <link rel="stylesheet" href="../css/forms.css">
+        <script src="../js/validate.js"></script>
     </head>
 
     <body>
@@ -14,24 +15,29 @@
             <legend>Sign Up</legend>
             
             <div class="form-container">
-                <label for="">Username</label>
-                <input type="text" name="username" required>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+                <p class="warning" id="username_msg"></p>
             </div>
             <div class="form-container">
                 <label for="">Email</label>
-                <input type="text" name="email" required>
+                <input type="text" id="email" name="email" required>
+                <p class="warning" id="email_msg"></p>
             </div>
             <div class="form-container">
                 <label for="">Phone Number</label>
-                <input type="text" name="phone_number">
+                <input type="text" id="phone_number" name="phone_number">
+                <p class="warning" id="phone_msg"></p>
             </div>
             <div class="form-container">
                 <label for="">Password</label>
-                <input type="password" name="password" required>
+                <input type="password" id="password" name="password" required>
+                <p class="warning" id="password_msg"></p>
             </div>
             <div class="form-container">
                 <label for="">Confirm Password</label>
-                <input type="password" name="confirm_password" required>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+                <p class="warning" id="confirmpass_msg"></p>
             </div>
             <div class="form-container">
                 <label for="">Account Type</label>
@@ -45,7 +51,19 @@
                 <a href="signin.php">Sign in here</a>
             </div>
 
-            <button type="button">Sign Up</button>
+            <div id="submit-btn">
+                <button type="submit" class="disable" disabled>Sign Up</button>
+            </div>
         </form>
+
+
+        <script>
+            document.getElementById("username").addEventListener("input", chk_user);
+            document.getElementById("username").addEventListener("blur", chk_user);
+            document.getElementById("email").addEventListener("blur", chk_email);
+            document.getElementById("phone_number").addEventListener("blur", chk_phone);
+            document.getElementById("password").addEventListener("input", chk_pass);
+            document.getElementById("confirm_password").addEventListener("input", match_pass);
+        </script>
     </body>
 </html>
