@@ -16,7 +16,7 @@ body {
     justify-content: center;
     gap: 20px;
     padding: 10px;
-    background: #8FBC94;
+    background: #B3C995;
 }
 
 .branch-container label {
@@ -45,7 +45,7 @@ body {
 
 /* Product Card */
 .card {
-    background: #D5ECBA;
+    background: #FFF1CB;
     box-shadow: 0 2px 6px rgb(45, 44, 44);
     text-align: left;
     padding: 15px;

@@ -55,7 +55,7 @@
     </div>
 
     <?php
-        include("database.php"); // Establishes a connection to the database
+        include("../database.php"); // Establishes a connection to the database
 
         // Fetch items from the database
         try {
@@ -67,7 +67,7 @@
         
                 while ($row = $result->fetch_assoc()) {
                     echo '<div class="card" draggable="true" ondragstart="drag(event)" id="' . htmlspecialchars($row["item_id"]) . '">'
-                            . '<img src="' . htmlspecialchars($row["image_url"]) . '" alt="Product Image">'
+                            . '<img src="../img/' . htmlspecialchars($row["image_url"]) . '" alt="Product Image">'
                             . '<h3>' . htmlspecialchars($row["item_name"]) . '</h3>'
                             . '<p class="price">$' . number_format($row["price"], 2) . '</p>'
                             . '<p class="details">Made in: ' . htmlspecialchars($row["made_in"]) . '</p>'

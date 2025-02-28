@@ -16,7 +16,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #56445D;
+    background-color: #E7B76F;
     padding: 20px;
     color: white;
 }
@@ -59,7 +59,7 @@ body {
 
 
 .search-container button {
-    background: #56445D;
+    background: #E7B76F;
     color: white;
     border: none;
     padding: 8px 12px;
@@ -68,24 +68,29 @@ body {
 }
 
 .search-container button:hover {
-    background: #8FBC94;
+    background: #FFF1CB;
+    color: black;
+    border: solid 1.5px #E7B76F;
 }
 
 /* Sign In Button */
 .signin-btn {
-    background-color: #8FBC94;
+    background-color: #7FA06D;
     color: white;
     border: none;
     padding: 10px 15px;
     cursor: pointer;
     border-radius: 5px;
+    border: solid #7FA06D;
     font-size: 16px;
     font-weight: bold;
     text-decoration: none;
 }
 
 .signin-btn:hover {
-    background-color: #8FBC94;
+    background-color: #B3C995;
+    border: solid #7FA06D;
+    color: black;
 }
 
 .login {
@@ -107,7 +112,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #56445D;
+    background-color: #E7B76F;
     padding: 15px 20px;
     border-top: 2px solid black;
 }
@@ -127,5 +132,6 @@ body {
 }
 
 .navlink li a:hover {
-    background-color: #8FBC94;
+    background-color: #FFF1CB;
+    color: black;
 }
