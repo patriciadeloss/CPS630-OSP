@@ -30,8 +30,7 @@
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            echo '<p> Item ID: ' . htmlspecialchars($itemID) . ',' .
-                    ' Item Name: ' . htmlspecialchars($itemName) . ',' .
+            echo '<p> Item ID: ' . htmlspecialchars($row['item_id']) . ',' .
                     ' Quantity: ' . htmlspecialchars($row['quantity']) . ',' .
                     ' Price: ' . htmlspecialchars($row['price']) . '</p>';
         }
