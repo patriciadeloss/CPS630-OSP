@@ -1,0 +1,161 @@
+body {
+    background-color: white;
+}
+
+.container {
+    background-color: white;
+    margin: 1.5% 2%;
+    margin-bottom: 0px;
+}
+
+.container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.cart-container {
+    padding: 0 4vw;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead, tbody, tr, td, th { display: block; }
+
+
+thead {
+    height: 35px;
+    border-bottom: solid 2px gray;
+}
+
+thead th, tbody td {
+    float: left;
+}
+
+/* scrolling */
+tbody {
+    height: 42vh; 
+    overflow-y: auto;
+}
+
+tbody tr {
+    height: 20vmin;
+    margin: 2vmin 0px;
+}
+
+/* add bottom border to all tr except last tr*/
+tbody tr:not(:last-child) {
+    border-bottom: solid 1px rgb(165, 165, 165);
+}
+
+/* center price and selector vertically */
+tbody tr > :nth-child(n + 2){
+    transform: translateY(55%);
+}
+
+tr > :first-child {
+    width: 40vw;
+}
+
+tr > :nth-child(2), :nth-child(4) {
+    width: 11.5vw;
+}
+
+tr > :nth-child(3) {
+    width: 15vw;
+}
+
+tr img {
+    height: 18vmin;
+    width: 18vmin;
+    object-fit: cover;
+}
+
+/* text wrapping */
+#itemInfo {
+    width: 70%;
+    overflow-wrap: break-word;
+}
+
+#price {
+    color: #7FA06D;
+}
+
+#amountSelector > * {
+    float: left;
+    margin: 0 5px;
+}
+
+#amountSelector button {
+    height: 5vmin;
+    width: 5vmin;
+
+    background-color: #FFF1CB;
+    filter: drop-shadow(0 4px 2px #856d49);
+
+    border-radius: 7px;
+    border: solid 0.5px rgb(168, 168, 168);
+    
+}
+
+#amountSelector button:hover {
+    background-color: #B3C995;
+    filter: drop-shadow(0 3px 1px #53604c);
+
+}
+
+.overview {
+    padding: 15px 10vmin;
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    position: fixed;
+
+    background-color: #FFF1CB;
+    filter: drop-shadow(0 -2px 2px #856d49);
+}
+
+.overview #p1 {
+    margin-left: 10px;
+    margin-right: auto;
+}
+
+.overview #p1 > * {
+    margin-bottom: 5px;
+}
+
+.overview #p2 {
+    margin-right: 10px;
+    margin-left: auto;
+}
+
+.overview button {
+    margin-left: 40%;
+    margin-top: 5px;
+    padding: 10px 15px;
+
+    background-color: #7FA06D;
+    border-radius: 5px;
+    border: solid #7FA06D;
+
+    font-weight: bold;
+    font-size: 1rem;
+    color: white;
+}
+
+.overview button:hover {
+    background-color: #B3C995;
+    border: solid #7FA06D;
+    color: black;
+}
+
+
+
+/*  -- Formatting classes --  */
+
+.child-left > * {
+    float: left;
+    margin-right: 20px;
+}
