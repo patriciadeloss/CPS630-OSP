@@ -22,8 +22,10 @@
 
     <header id="top-navbar">
         <div class="logo">
-            <img src="../img/logo.png" alt="Logo" class="logo-img">
-            Name
+            <a href="index.php">
+                <img src="../img/logo.png" alt="Logo" class="logo-img">
+                <p>Name</p>
+            </a>
         </div>
 
         <form class="search-container" action="search.php" method="GET">
