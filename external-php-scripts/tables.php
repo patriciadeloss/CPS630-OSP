@@ -45,6 +45,18 @@ try {
     )";
     $conn->query($sql);
 
+    $sql = "CREATE TABLE IF NOT EXISTS ShoppingCart (
+        order_id INT(6) UNSIGNED,
+        user_id INT(6) UNSIGNED,
+        item_id INT(6) UNSIGNED NOT NULL,
+        quantity INT NOT NULL,
+        price DECIMAL(10, 2),
+        FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE SET NULL,
+        FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE,
+        FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
+    )";
+    $conn->query($sql);
+
     $sql = "CREATE TABLE IF NOT EXISTS Shopping (
         receipt_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         store_code VARCHAR(30) NOT NULL,
@@ -78,11 +90,15 @@ try {
         ('Great Value Chicken Nuggets', 9.77, 'Canada', 'FRU02', 'chicken-nuggets.jpg'),
         ('Sealtest Partly Skimmed Milk', 6.25, 'Canada', 'DAI01', 'sealtest-milk.webp'),
         ('Philadelphia Cream Cheese', 4.58, 'UK', 'DAI02' ,'cheese.png')";
-    
     $conn->query($sql);
+
+    // temp user for now
+    /* $sql = "INSERT INTO Users (user_name, tel_no, email, address, city_code, login_id, password, balance) VALUES
+        ('gensanchi','416-123-4444','gvsanchi@gmail.com','100 Brimley Rd S','ABC','ABCDEFG','y33-h@w',400)";
+    $conn->query($sql); */
+
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
 }
-
 
 ?>
