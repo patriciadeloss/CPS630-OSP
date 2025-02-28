@@ -26,4 +26,18 @@
     </ul>
 </div>
 
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault(); // Enables dropping
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text"); // Retrieves the dragged item's ID
+        var draggedElement = document.getElementById(data); // Gets the dragged element
+        alert("Added to cart: " + draggedElement.querySelector("h3").innerText);
+    }
+
+</script>
+
 <!-- continuation in other php files -->
