@@ -37,7 +37,7 @@ body {
 
 .logo a p {
     transform: translateY(25%); /* Center name in logo */
-    float: left
+    float: left;
 }
 
 .logo-img {
@@ -145,4 +145,24 @@ body {
 .navlink li a:hover {
     background-color: #FFF1CB;
     color: black;
+}
+
+/* Styling for the DB Maintain options. Feel free to improve! */
+.dbmaintain-options {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    width: 100%;
+    background-color: #E7B76F;
+    z-index: 1;
+}
+
+.dbmaintain-options a {
+    text-align: center;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.dbmaintain:hover .dbmaintain-options {
+    display: block;
 }
