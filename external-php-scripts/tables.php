@@ -6,7 +6,7 @@ try {
     // Create table
     $sql = "CREATE TABLE IF NOT EXISTS Item (
         item_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        item_name VARCHAR(30) UNIQUE NOT NULL,
+        item_name VARCHAR(30) NOT NULL,
         price DECIMAL(10,2) NOT NULL,
         made_in VARCHAR(50), 
         department_code VARCHAR(10),
@@ -16,7 +16,8 @@ try {
 
     $sql = "CREATE TABLE IF NOT EXISTS Users (
         user_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        user_name VARCHAR(30) NOT NULL,
+        account_type INT(1) NOT NULL DEFAULT 1,
+        name VARCHAR(30) NOT NULL,
         tel_no VARCHAR(12) NOT NULL,
         email VARCHAR(254),
         address VARCHAR(100),
@@ -41,19 +42,7 @@ try {
         distance DECIMAL(10,2),
         truck_id INT(6) UNSIGNED,
         price DECIMAL(10,2),
-        FOREIGN KEY (truck_id) REFERENCES Truck(truck_id) ON DELETE SET NULL
-    )";
-    $conn->query($sql);
-
-    $sql = "CREATE TABLE IF NOT EXISTS ShoppingCart (
-        order_id INT(6) UNSIGNED,
-        user_id INT(6) UNSIGNED,
-        item_id INT(6) UNSIGNED NOT NULL,
-        quantity INT NOT NULL,
-        price DECIMAL(10, 2),
-        FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE SET NULL,
-        FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE,
-        FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
+        FOREIGN KEY (truck_id) REFERENCES Truck(truck_id) ON DELETE CASCADE
     )";
     $conn->query($sql);
 
@@ -64,8 +53,18 @@ try {
     )";
     $conn->query($sql);
 
+    $sql = "CREATE TABLE IF NOT EXISTS ShoppingCart (
+        item_id INT(6) UNSIGNED NOT NULL,
+        user_id INT(6) UNSIGNED,
+        quantity INT NOT NULL,
+        price DECIMAL(10, 2),
+        FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE
+    )";
+    $conn->query($sql);
+
     $sql = "CREATE TABLE IF NOT EXISTS Orders (
-        order_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        item_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         date_issued DATE NOT NULL,
         date_received DATE NOT NULL,
         total_price DECIMAL(10, 2),
@@ -73,9 +72,9 @@ try {
         user_id INT(6) UNSIGNED,
         trip_id INT(6) UNSIGNED,
         receipt_id INT(6) UNSIGNED,
-        FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE SET NULL,
-        FOREIGN KEY (trip_id) REFERENCES Trips(trip_id) ON DELETE SET NULL, 
-        FOREIGN KEY (receipt_id) REFERENCES Shopping(receipt_id) ON DELETE SET NULL
+        FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (trip_id) REFERENCES Trips(trip_id) ON DELETE CASCADE, 
+        FOREIGN KEY (receipt_id) REFERENCES Shopping(receipt_id) ON DELETE CASCADE
     )";
     $conn->query($sql);
 
