@@ -54,6 +54,7 @@ try {
     $conn->query($sql);
 
     $sql = "CREATE TABLE IF NOT EXISTS ShoppingCart (
+        order_id INT(6) UNSIGNED,
         item_id INT(6) UNSIGNED NOT NULL,
         user_id INT(6) UNSIGNED,
         quantity INT NOT NULL,
