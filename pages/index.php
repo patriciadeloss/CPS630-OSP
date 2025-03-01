@@ -1,3 +1,8 @@
+<?php 
+    session_start();
+    include("header.php"); 
+    include("../external-php-scripts/database.php"); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,38 +14,36 @@
 </head>
 
 <body>
-    <?php include("header.php"); ?>
+    <?php if (isset($_SESSION['account_type']) && $_SESSION['account_type'] == 1) { ?>
+        <!-- User Home Address & Branch Selection (Only for User) -->
+        <div class="branch-container">
+            <div class="user-home">
+                <label>Home Address:</label>
+                <span id="userAddress">123 Main St, City, Country</span>
+            </div>
 
-    <!-- User Home Address & Branch Selection -->
-    <div class="branch-container">
-        <div class="user-home">
-            <label>Home Address:</label>
-            <span id="userAddress">123 Main St, City, Country</span>
-        </div>
-
-        <div class="branch-location">
-            <form id="locationForm" action="" method="POST">
-                <label for="locations">Branch Location:</label>
-                <select name="location" id="locations" onchange="this.form.submit()">
-                    <option value="">Select a location</option>
-                    <option value="Location 1">Location 1</option>
-                    <option value="Location 2">Location 2</option>
-                    <option value="Location 3">Location 3</option>
-                </select>
-            </form>
+            <div class="branch-location">
+                <form id="locationForm" action="" method="POST">
+                    <label for="locations">Branch Location:</label>
+                    <select name="location" id="locations" onchange="this.form.submit()">
+                        <option value="">Select a location</option>
+                        <option value="Location 1">Location 1</option>
+                        <option value="Location 2">Location 2</option>
+                        <option value="Location 3">Location 3</option>
+                    </select>
+                </form>
             
-            <?php
-                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['location'])) {
-                    // Store the selected location in a variable
-                    $selected_location = $_POST['location'];
-                }
-            ?>
+                <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['location'])) {
+                        // Store the selected location in a variable
+                        $selected_location = $_POST['location'];
+                    }
+                ?>
+            </div>
         </div>
-    </div>
-
+    <?php } ?>
+    
     <?php
-        include("../external-php-scripts/database.php"); // Establishes a connection to the database
-        include("../external-php-scripts/tables.php");
 
         // Fetch items from the database
         try {
@@ -62,7 +65,7 @@
         
                 echo '</div>';
             } else {
-                echo "<p>No products found.</p>";
+                echo '<p>No products found.</p>';
             }
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
