@@ -34,10 +34,19 @@
         </form>
 
         <div class="login">
-            <a href="cart.php" class="cart-icon" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <img src="../img/shopping-cart.png" alt="Cart">
+            <a href="cart.php" class="cart-icon" id="cartIcon">
+                <div id="cart" class="cart-dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <img src="../img/shopping-cart.png" alt="Shopping Cart">
+                </div>
             </a>
-            <a href="signin.php" class="signin-btn">Sign In</a>
+    
+            <?php if (isset($_SESSION['account_type'])) { ?>
+                <!-- If the user is logged in, show the Logout button -->
+                <a href="logout.php" class="signin-btn">Logout</a>
+            <?php } else { ?>
+                <!-- If the user is not logged in, show the Sign In button -->
+                <a href="signin.php" class="signin-btn">Sign In</a>
+            <?php } ?>
         </div>
     </header>
 
@@ -47,6 +56,19 @@
             <li><a href="services.php">Types of Services</a></li>
             <li><a href="reviews.php">Reviews</a></li>
             <li><a href="about.php">About Us</a></li>
+            <li> 
+            <?php if (isset($_SESSION['account_type']) && $_SESSION['account_type'] == 0) { ?>
+                <div class="dbmaintain">
+                    <a href="">DB Maintain</a>
+                    <div class="dbmaintain-options">
+                        <a href="db_insert.php">Insert</a>
+                        <a href="db_delete.php">Delete</a>
+                        <a href="db_select.php">Select</a>
+                        <a href="db_update.php">Update</a>
+                    </div>
+                </div>
+            <?php } ?>
+            </li>
         </ul>
     </div>
 
