@@ -27,9 +27,9 @@
             $result = $conn->query($sql);
         }
         // if not, add a new entry w qty=1
-        // ** order is currently fixed !!
+        // ** order id is currently fixed !!
         else {
-            $sql = "INSERT INTO ShoppingCart(order_id,user_id,item_id,quantity,price) VALUES($userID,1,$droppedItemID,1,$itemPrice)";
+            $sql = "INSERT INTO ShoppingCart(order_id,item_id,user_id,quantity,price) VALUES(1,$droppedItemID,$userID,1,$itemPrice)";
             $result = $conn->query($sql);
         }
     }
