@@ -19,7 +19,6 @@ $error_message = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $login_id = $_POST['username'];
     $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
 
     $sql = "SELECT * FROM Users WHERE login_id = '$login_id'";
     $result = $conn->query($sql);
@@ -27,10 +26,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows == 1) {
         $user = $result->fetch_assoc();
 
-        if ($password === $user['password'] && $confirm_password === $user['password']) {
+        if ($password === $user['password']) {
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['name'] = $user['name'];
             $_SESSION['account_type'] = $user['account_type'];
+            session_write_close();
+            ob_end_flush();
 
             if ($user['account_type'] == 0) {
                 header("Location: admin.php");
@@ -69,18 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-container">
                 <label for="">Password</label>
                 <input type="password" name="password" required>
-            </div>
-            <div class="form-container">
-                <label for="">Confirm Password</label>
-                <input type="password" name="confirm_password" required>
-            </div>
-            <div class="form-container">
-                <label for="">Account Type</label>
-                <select name="account_type" id="">
-                    <option value="1">User</option>
-                    <option value="0">Administrator</option>
-                </select>
-            </div>
+            </div>  
             <div class="form-container"> 
                 <p style="display: inline;">Don't have an account?</p>
                 <a href="signup.php">Sign up here</a>

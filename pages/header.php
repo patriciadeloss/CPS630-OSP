@@ -13,7 +13,6 @@
                 var draggedElement = document.getElementById(data); // Gets the dragged element
                 alert("Added to cart: " + draggedElement.querySelector("h3").innerText);
 
-                // new code !! -Gen
                 // submits the dragged item's ID in the invisible form
                 $("#itemID").val(data);
                 $("#updateCart").submit();
@@ -73,11 +72,9 @@
     </div>
 
     <!-- 
-    new code !! -Gen
-    Invsible form. It doesn't matter where this is located - as long as it's
-    present
+    Invsible form to trigger php script that handles items dropped into the cart
     -->
-    <form action="../external-php-scripts/updateCart.php" method="POST" id="updateCart" style="display:none;">
+    <form action="cart.php" method="POST" id="updateCart" style="display:none;">
         <input type="text" name="itemID" id="itemID">
         <input type="submit">
     </form>
