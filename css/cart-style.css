@@ -165,3 +165,8 @@ tr img {
     display: flex;
     flex-flow: row;
 }
+
+/* Override initial column widths to span entire table */
+.span-all {
+    width: 90vw !important;
+}
