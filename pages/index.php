@@ -55,7 +55,7 @@
         
                 while ($row = $result->fetch_assoc()) {
                     echo '<div class="card" draggable="true" ondragstart="drag(event)" id="' . htmlspecialchars($row["item_id"]) . '">'
-                            . '<img src="../img/' . htmlspecialchars($row["image_url"]) . '" alt="Product Image">'
+                            . '<img src="../img/' . htmlspecialchars($row["image_url"]) . '" alt="Product Image" ' . 'draggable="true" ondragstart="drag(event)" id="' . htmlspecialchars($row["item_id"]) . '">'
                             . '<h3>' . htmlspecialchars($row["item_name"]) . '</h3>'
                             . '<p class="price">$' . number_format($row["price"], 2) . '</p>'
                             . '<p class="details">Made in: ' . htmlspecialchars($row["made_in"]) . '</p>'
