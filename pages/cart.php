@@ -103,6 +103,7 @@
                             // *** NOTE: order id is currently fixed !!
                             $sql = "SELECT * FROM ShoppingCart WHERE order_id = 1 AND user_id = $userID";
                             $result = $conn->query($sql);
+                            $orderid = 1;
 
                             if ($result->num_rows > 0) {
                                 while ($cartRow = $result->fetch_assoc()) {
@@ -163,14 +164,14 @@
                 <p>Discounts: $<span id="discount">0.00</span></p>
                 <?php 
                     $tax = $grandTotal*0.13;
-                    //umber_format to format 2 decimal places
+                    //number_format to format 2 decimal places
                     echo "<p>Tax: $<span id='tax'>" . number_format(round($tax,2), 2) . "</span></p>"
                 ?>
             </div>
             <div id="p2">
                 <!-- number_format to format 2 decimal places -->
                 <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>" ?>
-                <button>Check Out</button>
+                <a href="payments.php?orderid=<?php echo $orderid?>"><button>Check Out</button></a>
             </div>
         </footer>
     </body>
