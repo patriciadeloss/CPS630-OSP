@@ -60,12 +60,13 @@ try {
         quantity INT NOT NULL,
         price DECIMAL(10, 2),
         FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
-        FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE
+        FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE,
+        FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
     )";
     $conn->query($sql);
 
     $sql = "CREATE TABLE IF NOT EXISTS Orders (
-        item_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        order_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         date_issued DATE NOT NULL,
         date_received DATE NOT NULL,
         total_price DECIMAL(10, 2),

@@ -14,8 +14,8 @@
         $sql = "SELECT * FROM Item WHERE item_id = " . "$droppedItemID"; 
         $result = $conn->query($sql);
         $row = $result->fetch_assoc();
-        $itemName = $row['item_name'];
-        $itemPrice = $row['price'];
+        
+        $itemPrice = $row['price']; 
 
         // update Shopping Cart table accordingly
         $sql = "SELECT * FROM ShoppingCart WHERE item_id = " . "$droppedItemID";
@@ -27,7 +27,7 @@
             $result = $conn->query($sql);
         }
         // if not, add a new entry w qty=1
-        // ** order id is currently fixed !!
+        // *** NOTE: order id is currently fixed !!
         else {
             $sql = "INSERT INTO ShoppingCart(order_id,item_id,user_id,quantity,price) VALUES(1,$droppedItemID,$userID,1,$itemPrice)";
             $result = $conn->query($sql);
@@ -79,16 +79,27 @@
                     </tr>
                 </thead>
                 <tbody class="cart-container">
+                    <!-- display user's shopping cart items -->
                     <?php
-                        // display user's shopping cart items
+                        // retrieve a user's entries for their curr order from the Shopping Cart Table
+                        // *** NOTE: order id is currently fixed !!
                         $sql = "SELECT * FROM ShoppingCart WHERE order_id = 1 AND user_id = $userID";
                         $result = $conn->query($sql);
+                        $grandTotal = 0.00;
+                        $grandQty = 0;
+
                         if ($result->num_rows > 0) {
                             while ($cartRow = $result->fetch_assoc()) {
                                 // for the curr fetched item from the Cart table,
-                                // use its item_id to retrieve its item name from the Item table
+                                
+                                // add its total price to the order total,
+                                $grandTotal = $grandTotal+$cartRow['price'];
+                                // increment item count of order,
+                                $grandQty = $grandQty+$cartRow['quantity'];
+
+                                // and use its item_id to retrieve its item name from the Item table
                                 $sql = "SELECT * FROM Item WHERE item_id = " . $cartRow['item_id'];
-                                $result2 = $conn->query($sql); // srry, ik result2 might be a bad var namee
+                                $result2 = $conn->query($sql); 
                                 $itemRow = $result2->fetch_assoc();
                                 
                                 echo "
@@ -117,12 +128,12 @@
         </div>
         <footer class="overview">
             <div id="p1">
-                <p>Number of items: <span id="numItems">3</span></p>
+                <?php echo "<p>Number of items: <span id='numItems'>{$grandQty}</span></p>" ?>
                 <p>Discounts: $<span id="discount">0.00</span></p>
                 <p>Tax: $<span id="tax">0.00</span></p>
             </div>
             <div id="p2">
-                <h2>Grand Total: $<span id="grandTotal">0.00</span></h2>
+                <?php echo "<h2>Grand Total: $<span id='grandTotal'>{$grandTotal}</span></h2>" ?>
                 <button>Check Out</button>
             </div>
         </footer>
