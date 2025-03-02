@@ -139,10 +139,13 @@
             <div id="p1">
                 <?php echo "<p>Number of items: <span id='numItems'>" . $grandQty . "</span></p>" ?>
                 <p>Discounts: $<span id="discount">0.00</span></p>
-                <p>Tax: $<span id="tax">13%</span></p>
+                <?php 
+                    $tax = $grandTotal*0.13;
+                    echo "<p>Tax: $<span id='tax'>" . round($tax,2) . "</span></p>"
+                ?>
             </div>
             <div id="p2">
-                <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . round($grandTotal+($grandTotal*0.13),2) . "</span></h2>" ?>
+                <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . round($grandTotal+$tax,2) . "</span></h2>" ?>
                 <button>Check Out</button>
             </div>
         </footer>
