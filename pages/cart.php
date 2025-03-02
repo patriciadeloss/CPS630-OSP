@@ -96,6 +96,16 @@
                         $result = $conn->query($sql);
                         $grandTotal = 0.00;
                         $grandQty = 0;
+                    ?>
+                    <!-- If user is logged in, display cart -->
+                    <?php if (isset($_SESSION['account_type'])) { ?>
+                        <!-- display user's shopping cart items -->
+                        <?php
+                            // retrieve a user's entries for their curr order from the Shopping Cart Table
+                            // *** NOTE: order id is currently fixed !!
+                            $sql = "SELECT * FROM ShoppingCart WHERE order_id = 1 AND user_id = $userID";
+                            $result = $conn->query($sql);
+                            $orderid = 1;
 
                         if ($result->num_rows > 0) {
                             while ($cartRow = $result->fetch_assoc()) {
@@ -139,11 +149,16 @@
             <div id="p1">
                 <?php echo "<p>Number of items: <span id='numItems'>{$grandQty}</span></p>" ?>
                 <p>Discounts: $<span id="discount">0.00</span></p>
-                <p>Tax: $<span id="tax">0.00</span></p>
+                <?php 
+                    $tax = $grandTotal*0.13;
+                    //number_format to format 2 decimal places
+                    echo "<p>Tax: $<span id='tax'>" . number_format(round($tax,2), 2) . "</span></p>"
+                ?>
             </div>
             <div id="p2">
-                <?php echo "<h2>Grand Total: $<span id='grandTotal'>{$grandTotal}</span></h2>" ?>
-                <button>Check Out</button>
+                <!-- number_format to format 2 decimal places -->
+                <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>" ?>
+                <a href="payments.php?orderid=<?php echo $orderid?>"><button>Check Out</button></a>
             </div>
         </footer>
     </body>
