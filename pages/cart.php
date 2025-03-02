@@ -159,13 +159,15 @@
         </div>
         <footer class="overview">
             <div id="p1">
-                <?php echo "<p>Number of items: <span id='numItems'>{$grandQty}</span></p>" ?>
+                <?php echo "<p>Number of items: <span id='numItems'>" . $grandQty . "</span></p>" ?>
                 <p>Discounts: $<span id="discount">0.00</span></p>
-                <p>Tax: $<span id="tax">0.00</span></p>
+                <?php 
+                    $tax = $grandTotal*0.13;
+                    echo "<p>Tax: $<span id='tax'>" . round($tax,2) . "</span></p>"
+                ?>
             </div>
             <div id="p2">
-                <!-- number_format to format 2 decimal places -->
-                <?php echo "<h2>Grand Total: $<span id='grandTotal'>". number_format($grandTotal, 2) . "</span></h2>" ?>
+                <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . round($grandTotal+$tax,2) . "</span></h2>" ?>
                 <button>Check Out</button>
             </div>
         </footer>

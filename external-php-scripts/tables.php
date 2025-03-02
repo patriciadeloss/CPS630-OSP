@@ -61,7 +61,7 @@ try {
         price DECIMAL(10, 2),
         FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
         FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE,
-        FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
+        FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
     )";
     $conn->query($sql);
 
