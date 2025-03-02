@@ -127,13 +127,13 @@
                                                     <p>Item details</p>
                                                 </div>
                                             </td>
-                                            <td id='price'>" . htmlspecialchars($itemRow['price']) . "</td>
+                                            <td id='price'> $" . htmlspecialchars($itemRow['price']) . "</td>
                                             <td id='amountSelector'>
                                                 <button>-</button>
                                                 <p id='amount'>" . htmlspecialchars($cartRow['quantity']) . "</p>
                                                 <button>+</button>
                                             </td>
-                                            <td>" . htmlspecialchars($cartRow['price']) . "</td>
+                                            <td> $" . htmlspecialchars($cartRow['price']) . "</td>
                                         </tr>
                                     ";
                                 }
@@ -163,11 +163,13 @@
                 <p>Discounts: $<span id="discount">0.00</span></p>
                 <?php 
                     $tax = $grandTotal*0.13;
-                    echo "<p>Tax: $<span id='tax'>" . round($tax,2) . "</span></p>"
+                    //umber_format to format 2 decimal places
+                    echo "<p>Tax: $<span id='tax'>" . number_format(round($tax,2), 2) . "</span></p>"
                 ?>
             </div>
             <div id="p2">
-                <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . round($grandTotal+$tax,2) . "</span></h2>" ?>
+                <!-- number_format to format 2 decimal places -->
+                <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>" ?>
                 <button>Check Out</button>
             </div>
         </footer>
