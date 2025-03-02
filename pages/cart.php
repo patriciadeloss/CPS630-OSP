@@ -60,10 +60,19 @@
             </form>
 
             <div class="login">
-                <a href="cart.php" class="cart-icon">
-                    <img src="../img/shopping-cart.png" alt="Cart">
+                <a href="cart.php" class="cart-icon" id="cartIcon">
+                    <div id="cart" class="cart-dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <img src="../img/shopping-cart.png" alt="Shopping Cart">
+                    </div>
                 </a>
-                <a href="signin.php" class="signin-btn">Sign In</a>
+        
+                <?php if (isset($_SESSION['account_type'])) { ?>
+                    <!-- If the user is logged in, show the Logout button -->
+                    <a href="logout.php" class="signin-btn">Logout</a>
+                <?php } else { ?>
+                    <!-- If the user is not logged in, show the Sign In button -->
+                    <a href="signin.php" class="signin-btn">Sign In</a>
+                <?php } ?>
             </div>
         </header>
 

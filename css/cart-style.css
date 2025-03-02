@@ -22,7 +22,9 @@ table {
     border-collapse: collapse;
 }
 
-thead, tbody, tr, td, th { display: block; }
+thead, tbody, tr, td, th {
+     display: block; 
+}
 
 
 thead {
@@ -41,7 +43,7 @@ tbody {
 }
 
 tbody tr {
-    height: 20vmin;
+    height: 20vh;
     margin: 2vmin 0px;
 }
 
@@ -77,6 +79,8 @@ tr img {
 #itemInfo {
     width: 70%;
     overflow-wrap: break-word;
+    margin-left: 15px;
+    margin-top: 10px;
 }
 
 #price {
@@ -157,7 +161,7 @@ tr img {
 
 /*  -- Formatting classes --  */
 
-.child-left > * {
-    float: left;
-    margin-right: 20px;
+.child-left {
+    display: flex;
+    flex-flow: row;
 }
