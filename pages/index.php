@@ -17,10 +17,6 @@
                 // Update the database with the new address
                 $sql = "UPDATE Users SET address = '$home_address' WHERE user_id = $user_id";
                 $result = $conn->query($sql);
-
-                // Optionally, update the branch location in the database
-                // $sql = "UPDATE Users SET branch_location = '$branch_location' WHERE user_id = $user_id";
-                // $conn->query($sql);
             }
         }
     }
