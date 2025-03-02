@@ -120,13 +120,13 @@
                                                 <p>Item details</p>
                                             </div>
                                         </td>
-                                        <td id='price'>" . htmlspecialchars($itemRow['price']) . "</td>
+                                        <td id='price'>$" . htmlspecialchars($itemRow['price']) . "</td>
                                         <td id='amountSelector'>
                                             <button>-</button>
                                             <p id='amount'>" . htmlspecialchars($cartRow['quantity']) . "</p>
                                             <button>+</button>
                                         </td>
-                                        <td>" . htmlspecialchars($cartRow['price']) . "</td>
+                                        <td>$" . htmlspecialchars($cartRow['price']) . "</td>
                                     </tr>
                                 ";
                             }
