@@ -30,7 +30,6 @@ header { flex-shrink: 0; }
 }
 
 .profile-card-header {
-    padding: 50px;
     width: 100%;
     height: 175px;
     background-color: #B3C995;
@@ -40,13 +39,6 @@ header { flex-shrink: 0; }
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.pfp {
-    width: 115px;
-    height: 115px;
-    background-color: whitesmoke;
-    border-radius: 50%;
 }
 
 .profile-card-body {
