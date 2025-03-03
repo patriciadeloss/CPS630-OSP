@@ -54,7 +54,7 @@
     if ($orderid != NULL && isset($_SESSION['account_type'])) {
         $userID = $_SESSION['user_id']; ?>
         <div class="subheader">
-            <a href="cart.php">Back</a>
+            <a href="cart.php">Return to Shopping Cart</a>
             <h1>Payments</h1> <hr>
         </div>
         
