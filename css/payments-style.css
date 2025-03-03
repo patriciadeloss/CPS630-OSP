@@ -1,0 +1,235 @@
+.subheader {
+    margin: 1% 6% 1%;
+}
+
+.subheader h1 {
+    margin-bottom: 10px;
+}
+
+.error {
+    margin-top: 5%;
+    width: 100%;
+    text-align: center;
+}
+
+.error h1 {
+    font-size: 4rem;
+    margin-bottom: 2%;
+}
+
+.error p {
+    font-size: 1.3rem;
+}
+
+.container2 {
+    width: 100vw;
+    padding: 1% 6%;
+    display: flex;
+    flex-flow: row;
+    
+}
+
+.summary-container {
+    background-image: linear-gradient(#FBC573, #FFF1CB, #FFF1CB, #FFF1CB);
+    margin-right: auto;
+    width: 45vw;
+    height: auto;
+    box-shadow: 0px 4px 4px 0px #bc9151; 
+    border-radius: 5px;
+    padding: 10px;
+    overflow: auto;
+}
+
+.summary-container h2 {
+    margin-left: 2%;
+    margin-top: 5px;
+}
+
+
+table {
+    width: 90%;
+    margin: 15px 5% 10px;
+    border-collapse: collapse;
+}
+
+thead, tbody, tr, td, th {
+     display: block; 
+}
+
+thead {
+    height: 30px;
+    border-bottom: solid 2px #B3C995;
+}
+
+thead th, tbody td {
+    float: left;
+    text-align: center;
+    margin: 0 2%;
+}
+
+tbody td {
+    float: left;
+    text-align: center;
+    margin: 0 2.5%;
+}
+
+/* scrolling */
+tbody {
+    margin-top: 10px;
+    height: 25vh; 
+    overflow-y: auto;
+}
+
+tbody tr {
+    overflow: auto;
+    margin: 0.5vmin 0px;
+    padding-bottom: 8px;
+}
+
+/* add bottom border to all tr except last tr*/
+tbody tr:not(:last-child) {
+    border-bottom: solid 1px #A5A5A5;
+}
+
+tr > :first-child {
+    width: 20%;
+}
+
+tr > :nth-child(2) {
+    width: 40%;
+    overflow-wrap: break-word;
+}
+
+tr > :nth-child(3) {
+    width: 20%;
+}
+
+
+.overview {
+    padding: 10px 10px;
+    width: 100%;
+    height: 14vh;
+    display: flex;
+    flex-flow: row;
+
+    background-color: #FFF1CB;
+    box-shadow: 0px -6px 4px -5px #856d49;
+}
+
+.overview #p1 {
+    margin-left: 10px;
+    margin-right: auto;
+    font-size: 0.9rem;
+}
+
+.overview #p2 {
+    margin-right: 10px;
+    margin-left: auto;
+    display: flex;
+}
+
+.overview #p2 #totals {
+    margin-top: auto;
+    margin-bottom: 0;
+}
+
+#totals p { 
+    text-align: right;
+    color: #7FA06D;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+
+.payments-container {
+    margin-left: auto;
+    margin-right: 10%;
+    padding: 10px;
+    padding-left: 70px;
+    
+    width: 30vw;
+    height: auto;
+    
+    overflow: auto;
+    box-shadow: -8px 0px 5px -6px gray;
+}
+
+.payments-container form {
+    display: flex;
+    flex-flow: column;
+}
+
+.payments-container form label{
+    padding-top: 2.5vmin;
+    font-weight: 400;
+    display: inline-block; /* To apply margin */
+}
+
+.payments-container form input, select {
+    height: 6vmin;
+    padding: 6px;
+    padding-bottom: 0px;
+
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #7FA06D;
+
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-weight: 300;   
+    font-size: 1rem;
+}
+
+.payments-container form input {
+    width: 80%;    
+}
+
+.payments-container #p3 > :nth-child(2){
+    padding-left: 97px;
+}
+
+.payments-container #p4 > :nth-child(3){
+    margin-left: 5%;
+    width: 20%;
+}
+
+.payments-container button {
+    padding: 10px 15px;
+    margin: 20px 0px 0px 5px;
+    width: 90%;
+
+    background-color: #7FA06D;
+    border-radius: 5px;
+    border: solid #7FA06D;
+
+    font-weight: bold;
+    font-size: 1rem;
+    color: white;
+
+    transition: 0.2s;
+}
+
+.payments-container button:hover {
+    background-color: #B3C995;
+    border: solid #7FA06D;
+    color: black;
+}
+
+#payment_icons {
+    margin-top: 10px;
+
+    display: flex;
+    flex-flow: row;
+}
+
+#payment_icons img{
+    height: 25px;
+    width: 45px;
+    object-fit: cover; /* keep aspect ratio */
+
+}
+
+
+.child-left {
+    display: flex;
+    flex-flow: row;
+}
