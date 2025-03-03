@@ -14,7 +14,7 @@
                 alert("Added to cart: " + draggedElement.querySelector("h3").innerText);
 
                 // submits the dragged item's ID in the invisible form
-                $("#itemID").val(data);
+                $("#droppedItemID").val(data);
                 $("#updateCart").submit();
             }
     </script>
@@ -75,7 +75,7 @@
     Invsible form to trigger php script that handles items dropped into the cart
     -->
     <form action="cart.php" method="POST" id="updateCart" style="display:none;">
-        <input type="text" name="itemID" id="itemID">
+        <input type="text" name="droppedItemID" id="droppedItemID">
         <input type="submit">
     </form>
 
