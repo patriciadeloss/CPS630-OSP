@@ -53,18 +53,6 @@ try {
     )";
     $conn->query($sql);
 
-    $sql = "CREATE TABLE IF NOT EXISTS ShoppingCart (
-        order_id INT(6) UNSIGNED,
-        item_id INT(6) UNSIGNED NOT NULL,
-        user_id INT(6) UNSIGNED,
-        quantity INT NOT NULL,
-        price DECIMAL(10, 2),
-        FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
-        FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE,
-        FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
-    )";
-    $conn->query($sql);
-
     $sql = "CREATE TABLE IF NOT EXISTS Orders (
         order_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         date_issued DATE NOT NULL,
@@ -80,6 +68,19 @@ try {
     )";
     $conn->query($sql);
 
+    $sql = "CREATE TABLE IF NOT EXISTS ShoppingCart (
+        order_id INT(6) UNSIGNED,
+        item_id INT(6) UNSIGNED NOT NULL,
+        user_id INT(6) UNSIGNED,
+        quantity INT NOT NULL,
+        price DECIMAL(10, 2),
+        FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE,
+        FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
+    )";
+    $conn->query($sql);
+
+
 } catch (PDOException $e) {
     echo "Error creating table: " . $e->getMessage() . "<br>";
 }
@@ -91,7 +92,38 @@ try {
         ('Great Value Chicken Nuggets', 9.77, 'Canada', 'FRU02', 'chicken-nuggets.jpg'),
         ('Sealtest Partly Skimmed Milk', 6.25, 'Canada', 'DAI01', 'sealtest-milk.webp'),
         ('Philadelphia Cream Cheese', 4.58, 'UK', 'DAI02' ,'cheese.png')";
+    
     $conn->query($sql);
+
+
+    /*
+    $sql = "INSERT INTO Shopping (store_code, total_price) VALUES
+        ('STR001', 'Available'),
+        ('STR002', 'Available'),
+        ('STR003', 'Unavailable')";
+    $conn->query($sql);
+
+    $sql = "INSERT INTO Truck (truck_code, avail_code) VALUES
+        ('TRK001', 'Available'),
+        ('TRK002', 'Available'),
+        ('TRK003', 'Unavailable')";
+    $conn->query($sql);
+
+    $sql = "INSERT INTO Trips (source_code, dest_code, distance, truck_id, price) VALUES
+    ('Toronto', 'Montreal', 540.00, 1, 120.50),
+    ('Vancouver', 'Calgary', 970.00, 2, 250.75),
+    ('Montreal', 'Calgary', 970.00, 3, 250.75)";
+    $conn->query($sql);
+
+
+    $sql = "INSERT INTO Orders (date_issued, date_received, total_price, payment_code, user_id, trip_id, receipt_id) VALUES 
+    ('2024-02-20', '2024-02-22', 150.75, 'PAY123', 1, 1, 1),
+    ('2024-02-21', '2024-02-23', 200.50, 'PAY456', 2, 2, 2),
+    ('2024-02-22', '2024-02-24', 99.99, 'PAY789', 3, 3, 3)";
+    $conn->query($sql);
+
+    */
+
 
     // temp user for now
     /* $sql = "INSERT INTO Users (user_name, tel_no, email, address, city_code, login_id, password, balance) VALUES
@@ -101,5 +133,6 @@ try {
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
 }
+
 
 ?>

@@ -28,7 +28,7 @@
         </div>
 
         <form class="search-container" action="search.php" method="GET">
-            <input type="text" name="query" placeholder="Search">
+            <input type="text" name="query" placeholder="Search by User-Id, Order-Id">
             <button type="submit">Go</button>
         </form>
 

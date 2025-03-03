@@ -14,9 +14,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     padding: 10px;
     background: #B3C995;
+    flex-wrap: wrap;
 }
 
 .branch-container label {
@@ -25,11 +26,32 @@ body {
     color: #333;
 }
 
-.branch-location select {
+.branch-container select {
     padding: 8px;
+    max-width: 100%;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 14px;
+}
+
+.branch-container input {
+    padding: 8px;
+    margin-right: 30px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.save-btn {
+    background-color: #7FA06D;
+    color: white;
+    padding: 8px 15px;
+    height: 35px;
+    cursor: pointer;
+    border:none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 /* Product Grid */
