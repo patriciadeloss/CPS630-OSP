@@ -7,9 +7,13 @@
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['home_address']) && isset($_POST['branch_location'])) {
             $home_address = $_POST['home_address']; // retrieve from input form
-            $branch_location = $_POST['branch_location']; // retrieve branch location
+            $branch_arr = $_POST['branch_location']; // retrieve branch info
+            $branch_info = explode("//", $branch_arr); //explode string to revert back to array
+            $branch_code = $branch_info[0]; //retrieve store code
+            $branch_location = $branch_info[1]; // retrieve branch address
             $_SESSION['home_address'] = $home_address; // Store in session
             $_SESSION['branch_location'] = $branch_location; // Store branch location in session
+            $_SESSION['branch_code'] = $branch_code; // Store branch location in session
 
             if (isset($_SESSION['user_id'])) {
                 $user_id = $_SESSION['user_id'];
@@ -41,22 +45,38 @@
                 <label for="home_address">Home Address:</label>
                 <input type="text" id="home_address" name="home_address" placeholder="Enter your address"
                     value="<?php echo isset($_SESSION['home_address']) ? htmlspecialchars($_SESSION['home_address']) : ''; ?>" required>
-                
+                    
+                    <?php
+                        //create an array of branch addresses based on database
+                        $sql = "SELECT * FROM Branch";
+                        $branch_res = $conn->query($sql);
+                        $branches = array();
+
+                        if ($branch_res->num_rows > 0) {
+                            while ($branch_row = $branch_res->fetch_assoc()) {
+                                //append information to branches array
+                                $branches[] = array($branch_row['store_code'], $branch_row['branch_address']);
+                            }
+                        }
+                    ?>
+                    
                     <label for="branch_location">Branch Location:</label>
                     <select name="branch_location" id="branch_location">
                         <option value="">Select a location</option>
                         <?php 
-                            // An array with the store's branch locations
-                            $branches = ["300 Borough Dr, Scarborough, ON", "900 Dufferin St, Toronto, ON", "100 City Centre Dr, Mississauga, ON"];
                             // Loop through each branch and add the selected attribute to option
                             foreach ($branches as $branch) {  // Use $branches to loop
                                 $selected = "";
                                 // If a branch has been selected by the user and stored in the session,
                                 // then add the selected attribute to that branch option
-                                if (isset($_SESSION['branch_location']) && $_SESSION['branch_location'] == $branch) {
+                                if (isset($_SESSION['branch_location']) && $_SESSION['branch_location'] == $branch[1]) {
                                     $selected = "selected";
                                 }
-                                echo "<option value=\"$branch\" $selected>$branch</option>";
+                                
+                                //Array() does not get posted properly 
+                                //implode array to string to post its value through the form
+                                $imp_branch = implode('//' , $branch);
+                                echo "<option value=\"$imp_branch\" $selected>$branch[1]</option>";
                             }
                         ?>
                     </select>

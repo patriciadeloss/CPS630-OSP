@@ -28,6 +28,12 @@ try {
     )";
     $conn->query($sql);
 
+    $sql = "CREATE TABLE IF NOT EXISTS Branch (
+        store_code VARCHAR(30) PRIMARY KEY,
+        branch_address VARCHAR(60) NOT NULL
+    )";
+    $conn->query($sql);
+
     $sql = "CREATE TABLE IF NOT EXISTS Truck (
         truck_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         truck_code VARCHAR(30) NOT NULL,
@@ -49,7 +55,8 @@ try {
     $sql = "CREATE TABLE IF NOT EXISTS Shopping (
         receipt_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         store_code VARCHAR(30) NOT NULL,
-        total_price DECIMAL(10,2) NOT NULL
+        total_price DECIMAL(10,2) NOT NULL,
+        FOREIGN KEY (store_code) REFERENCES Branch(store_code) ON DELETE CASCADE
     )";
     $conn->query($sql);
 
@@ -79,7 +86,6 @@ try {
         FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
     )";
     $conn->query($sql);
-
 
 } catch (PDOException $e) {
     echo "Error creating table: " . $e->getMessage() . "<br>";
@@ -130,6 +136,18 @@ try {
         ('gensanchi','416-123-4444','gvsanchi@gmail.com','100 Brimley Rd S','ABC','ABCDEFG','y33-h@w',400)";
     $conn->query($sql); */
 
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+//inserting Branch info
+try {
+    $sql = "INSERT INTO Branch VALUES 
+    ('STR001', '300 Borough Dr, Scarborough, ON'),
+    ('STR002', '900 Dufferin St, Toronto, ON'),
+    ('STR003', '100 City Centre Dr, Mississauga, ON')";
+
+    $conn->query($sql);
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
 }
