@@ -43,8 +43,8 @@ try {
 
     $sql = "CREATE TABLE IF NOT EXISTS Trips (
         trip_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        source_code VARCHAR(30) NOT NULL,
-        dest_code VARCHAR(30) NOT NULL,
+        source_code VARCHAR(50) NOT NULL,
+        dest_code VARCHAR(50) NOT NULL,
         distance DECIMAL(10,2),
         truck_id INT(6) UNSIGNED,
         price DECIMAL(10,2),
