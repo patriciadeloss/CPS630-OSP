@@ -54,13 +54,14 @@
     if ($orderid != NULL && isset($_SESSION['account_type'])) {
         $userID = $_SESSION['user_id']; ?>
         <div class="subheader">
+            <a href="cart.php">Back</a>
             <h1>Payments</h1> <hr>
         </div>
         
         <div class="container2">
             
             <div class="summary-container">
-                <h2>Order Summary:</h2>
+                <h3>Order Summary:</h3>
                 <table>
                     <thead>
                         <tr>

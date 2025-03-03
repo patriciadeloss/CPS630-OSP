@@ -6,6 +6,10 @@
     margin-bottom: 10px;
 }
 
+.subheader a{
+    color: #B3C995;
+}
+
 .error {
     margin-top: 5%;
     width: 100%;
@@ -40,7 +44,8 @@
     overflow: auto;
 }
 
-.summary-container h2 {
+.summary-container > h3 {
+
     margin-left: 2%;
     margin-top: 5px;
 }
