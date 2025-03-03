@@ -127,7 +127,8 @@
         
             <div class="payments-container">
                 <h3>Payment Details:</h3>
-                <form action="" method="POST">
+                <form action="confirmation.php" method="POST">
+                    <input type="text" value="<?php echo $orderid; ?>" name="orderid" style="display: none;" readonly>
                     <label for="cardholder_name">Cardholder Name:</label>
                     <input type="text" id="cardholder_name"  name="cardholder_name" placeholder="Cardholder Name">
                     <label for="card_number">Card Number:</label>
@@ -163,7 +164,7 @@
                         <img src="../img/icons/jcb.png" alt="">
                         <img src="../img/icons/amex.png" alt="">
                     </div>
-                    <a href=""><button>Pay Now</button></a>
+                    <button>Pay Now</button>
                 </form>
             </div>
         </div>
