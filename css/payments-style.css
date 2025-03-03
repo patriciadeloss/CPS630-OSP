@@ -81,8 +81,9 @@ tbody {
 }
 
 tbody tr {
-    height: 5vh;
-    margin: 1vmin 0px;
+    overflow: auto;
+    margin: 0.5vmin 0px;
+    padding-bottom: 8px;
 }
 
 /* add bottom border to all tr except last tr*/

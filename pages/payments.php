@@ -51,7 +51,8 @@
 
 
     <?php //only allow payment access if valid session and order number
-    if ($orderid != NULL && isset($_SESSION['account_type'])) {?>
+    if ($orderid != NULL && isset($_SESSION['account_type'])) {
+        $userID = $_SESSION['user_id']; ?>
         <div class="subheader">
             <h1>Payments</h1> <hr>
         </div>
@@ -69,58 +70,56 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1 x</td>
-                            <td>Item Name</td>
-                            <td>$0.00</td>
-                        </tr>
-                        <tr>
-                            <td>1 x</td>
-                            <td>Item Name</td>
-                            <td>$0.00</td>
-                        </tr>
-                        <tr>
-                            <td>1 x</td>
-                            <td>Item Name</td>
-                            <td>$0.00</td>
-                        </tr>
-                        <tr>
-                            <td>1 x</td>
-                            <td>Item Name</td>
-                            <td>$0.00</td>
-                        </tr>
-                        <tr>
-                            <td>1 x</td>
-                            <td>Item Name</td>
-                            <td>$0.00</td>
-                        </tr>
-                        <tr>
-                            <td>1 x</td>
-                            <td>Item Name</td>
-                            <td>$0.00</td>
-                        </tr>
-                        <tr>
-                            <td>1 x</td>
-                            <td>Item Name</td>
-                            <td>$0.00</td>
-                        </tr>
-                        <tr>
-                            <td>1 x</td>
-                            <td>Item Name</td>
-                            <td>$0.00</td>
-                        </tr>
+                    <?php 
+                        $subtotal = 0.00;
+                        $grandTotal = 0.00;
+                        $grandQty = 0;
+                        $tax = 0.00;
+                        //Referenced from shopping cart
+                        //orderid is currently fixed
+                        $sql = "SELECT * FROM ShoppingCart WHERE order_id = 1 AND user_id = $userID";
+                        $res = $conn->query($sql);
+
+                        if ($res->num_rows > 0) {
+                            while($cartRow = $res->fetch_assoc()) {
+                                //add price to subtotal
+                                $subtotal += $cartRow['price'];
+                                //increment total item count
+                                $grandQty += $cartRow['quantity'];
+
+                                //retreive item details from item table
+                                $sql = "SELECT * FROM Item WHERE item_id = " . $cartRow['item_id'];
+                                $res2 = $conn->query($sql);
+                                $itemRow = $res2->fetch_assoc();
+                                
+                                //htmlspecialchars to interpret as chars, not html code
+                                echo "
+                                    <tr>
+                                        <td>" . htmlspecialchars($cartRow['quantity']) . " x </td>
+                                        <td>" . htmlspecialchars($itemRow['item_name']) . "</td>
+                                        <td>" . htmlspecialchars($cartRow['price']) . "</td>
+                                    </tr>
+                                ";
+                                
+                            }
+                        }
+                    ?>
                     </tbody>
                 </table>
                 <div class="overview">
+                    <?php 
+                        $tax = $subtotal*0.13; 
+                        $grandTotal = $subtotal + $tax;
+                    ?>
                     <div id="p1">
-                        <p>Number of Items: 4</p>
+                        <p>Number of Items: <?php echo $grandQty ?></p>
                         <p>Discount: $0.00</p>
-                        <p>Tax: $0.00</p>
+                        <p>Tax: $<?php echo number_format(round($tax, 2),2); ?></p>
                     </div>
                     <div id="p2">
                         <div id="totals">
-                            <p>Subtotal: $0.00</p>
-                            <h3>Grand Total: $0.00</h3>
+                            <p>Subtotal: $<?php echo number_format(round($subtotal, 2),2); ?></p>
+                            <h3>Grand Total: $<?php echo number_format(round($grandTotal, 2),2);?></h3>
                         </div>
                     </div>
                 </div>
@@ -128,7 +127,7 @@
         
             <div class="payments-container">
                 <h3>Payment Details:</h3>
-                <form action="">
+                <form action="" method="POST">
                     <label for="cardholder_name">Cardholder Name:</label>
                     <input type="text" id="cardholder_name"  name="cardholder_name" placeholder="Cardholder Name">
                     <label for="card_number">Card Number:</label>
