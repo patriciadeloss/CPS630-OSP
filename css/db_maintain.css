@@ -1,0 +1,87 @@
+/* db_maintain.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#db-page {
+    background-color: rgb(247, 247, 247);
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
+#db-page h2 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form Container */
+#db-form {
+    width: 50%;
+    margin: 0 auto;
+    background-color: #FFF1CB;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#db-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #333;
+}
+
+#db-form input[type="text"],
+#db-form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#db-form input[type="text"]:focus,
+#db-form select:focus {
+    border-color: #E7B76F;
+    outline: none;
+}
+
+#db-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #E7B76F;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#db-form button:hover {
+    background-color: #FFF1CB;
+    color: black;
+    border: solid 1.5px #E7B76F;
+}
+
+#db-form input[type="text"],
+#db-form select {
+    font-size: 16px;
+}
+
+/* Styling for the labels */
+#db-form label {
+    font-weight: bold;
+    color: #333;
+}
+
+#db-page select {
+    font-size: 16px;
+}
