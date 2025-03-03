@@ -1,41 +1,7 @@
 <?php
     session_start();
     include("../external-php-scripts/database.php");
-
-
-    if (isset($_SESSION['account_type'])) {
-        $userID = $_SESSION['user_id'];
-
-        // Differentiates the 2 ways a user navigates to the cart - dropping an item or
-        // simply clicking on the icon
-        // This if statement accounts for the first case
-        if (isset($_POST['itemID'])) {
-            // retrieve dropped item's id
-            $droppedItemID = $_POST['itemID']; 
-            // retrieve its corresponding entry in the Item table
-            $sql = "SELECT * FROM Item WHERE item_id = " . "$droppedItemID"; 
-            $result = $conn->query($sql);
-            $row = $result->fetch_assoc();
-            
-            $itemPrice = $row['price']; 
-
-            // update Shopping Cart table accordingly
-            $sql = "SELECT * FROM ShoppingCart WHERE item_id = " . "$droppedItemID";
-            $result = $conn->query($sql);
-
-            // if an instance of the item is already in the table, update its entry's price and qty
-            if ($result->num_rows > 0) {
-                $sql = "UPDATE ShoppingCart SET quantity = quantity+1, price = price+$itemPrice WHERE item_id = $droppedItemID";
-                $result = $conn->query($sql);
-            }
-            // if not, add a new entry w qty=1
-            // *** NOTE: order id is currently fixed !!
-            else {
-                $sql = "INSERT INTO ShoppingCart(order_id,item_id,user_id,quantity,price) VALUES(1,$droppedItemID,$userID,1,$itemPrice)";
-                $result = $conn->query($sql);
-            }
-        }
-    }
+    include("../external-php-scripts/updateCart.php");
 ?>
 
 <!DOCTYPE html>
@@ -80,6 +46,7 @@
         </header>
 
         <div class="container">
+            <a href="index.php">Back</a>
             <h1>Your Shopping Cart</h1>
             <table>
                 <thead>
@@ -91,10 +58,8 @@
                     </tr>
                 </thead>
                 <tbody class="cart-container">
-                    <?php
-                        $grandTotal = 0.00;
-                        $grandQty = 0;
-                    ?>
+                    <?php $grandTotal = 0.00; $grandQty = 0; ?>
+                    
                     <!-- If user is logged in, display cart -->
                     <?php if (isset($_SESSION['account_type'])) { ?>
                         <!-- display user's shopping cart items -->
@@ -130,9 +95,12 @@
                                             </td>
                                             <td id='price'> $" . htmlspecialchars($itemRow['price']) . "</td>
                                             <td id='amountSelector'>
-                                                <button>-</button>
-                                                <p id='amount'>" . htmlspecialchars($cartRow['quantity']) . "</p>
-                                                <button>+</button>
+                                                <form action='cart.php' method='POST'>
+                                                    <input type='text' name='updateItemID' id='updateItemID' value='" . $cartRow['item_id'] . "' style='display:none;'>
+                                                    <button type='submit' name='updateQty' value='decrease'>-</button>
+                                                    <span id='amount'>" . htmlspecialchars($cartRow['quantity']) . "</span>
+                                                    <button type='submit' name='updateQty' value='increase'>+</button>
+                                                </form>
                                             </td>
                                             <td> $" . htmlspecialchars($cartRow['price']) . "</td>
                                         </tr>

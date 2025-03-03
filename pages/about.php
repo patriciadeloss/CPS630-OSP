@@ -14,7 +14,7 @@
         <section class="profile-card-container">
             <article class="profile-card">
                 <section class="profile-card-header">
-                    <div class=pfp></div>
+                    <img src="../img/pfp.svg" alt="" style="width:auto; height:50%;">
                 </section>
                 <section class="profile-card-body">
                     <h2>Patricia Delos Santos</h2>
@@ -25,7 +25,7 @@
             
             <article class="profile-card">
                 <section class="profile-card-header">
-                    <div class=pfp></div>
+                    <img src="../img/pfp.svg" alt="" style="width:auto; height:50%;">
                 </section>
                 <section class="profile-card-body">
                     <h2>Genevive Sanchez</h2>
@@ -36,7 +36,7 @@
 
             <article class="profile-card">
                 <section class="profile-card-header">
-                    <div class=pfp></div>
+                    <img src="../img/pfp.svg" alt="" style="width:auto; height:50%;">
                 </section>
                 <section class="profile-card-body">
                     <h2>Suboohi Sayeed</h2>
