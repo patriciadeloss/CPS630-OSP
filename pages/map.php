@@ -1,12 +1,22 @@
 <?php 
 session_start();
+include("../external-php-scripts/database.php");
+
 if (!isset($_SESSION['home_address']) || !isset($_SESSION['branch_location'])) {
     exit("Home address or branch address is missing.");
 }
 
 $home_address = $_SESSION['home_address'];
 $branch_location = $_SESSION['branch_location'];
+
+// Insert into Trips table
+$sql = "INSERT INTO Trips (source_code, dest_code) 
+       VALUES ('$branch_location', '$home_address')";
+
+$result = $conn->query($sql);
+$conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -35,10 +45,9 @@ $branch_location = $_SESSION['branch_location'];
         });
 
         var directionsService = new google.maps.DirectionsService();
-        var directionsRenderer = new google.maps.DirectionsRenderer();
-        directionsRenderer.setMap(map);
+        var directionsRenderer = new google.maps.DirectionsRenderer({map: map});
 
-        // Uses address names instead of coordinates
+        // Use address names instead of coordinates
         var request = {
             origin: '<?php echo $branch_location; ?>', // branch address from session
             destination: '<?php echo $home_address; ?>', // home address from session
@@ -55,7 +64,7 @@ $branch_location = $_SESSION['branch_location'];
     }
 </script>
 
-<!-- Google Maps API -->
+<!-- Load Google Maps API -->
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrIBP9HXZrhsDUA7bCPqn9S-33AwSiR5U&callback=initMap"></script>
 
 </body>
