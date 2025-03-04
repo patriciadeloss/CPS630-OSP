@@ -19,10 +19,10 @@ $receipt_id = $conn->insert_id;
 
 //create entry for orders table
 //**currently doesn't create entries for payment_code and trip_id fields
-//$sql = "INSERT INTO Orders (date_issued, date_received, total_price, user_id, receipt_id) VALUES ('" . $cur_date . "', '" . $cur_date . "', $grand_total, $user_id, $receipt_id)";
-//$conn->query($sql);
-//$order_id = $conn->insert_id;
-$order_id = 1;  
+$sql = "INSERT INTO Orders (date_issued, date_received, total_price, user_id, receipt_id) VALUES ('" . $cur_date . "', '" . $cur_date . "', $grand_total, $user_id, $receipt_id)";
+$conn->query($sql);
+$order_id = $conn->insert_id;
+//$order_id = 1;  
 
 ?>
 
