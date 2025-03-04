@@ -9,7 +9,10 @@
     </head>
 
     <body>
-        <?php include("header.php"); ?>
+        <?php 
+            session_start();
+            include("header.php"); 
+        ?>
 
         <section class="profile-card-container">
             <article class="profile-card">
