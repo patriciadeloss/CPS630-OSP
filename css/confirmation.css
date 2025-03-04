@@ -59,7 +59,7 @@
     width: 48%;
 }
 
-#invoice h2 {
+h2 {
     margin-bottom: 10px;
 }
 
@@ -122,5 +122,10 @@
 #map {
     margin-left: auto;
     margin-right: 0;
-    background-color: lightpink;
+    padding: 15px;
+    width: 48%;
+}
+
+#map iframe{
+    box-shadow: 0 6px 4px -2px gray;
 }

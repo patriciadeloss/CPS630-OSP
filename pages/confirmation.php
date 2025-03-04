@@ -105,6 +105,7 @@ $order_id = 1;
                             </div>
                             <div id="p2">
                                 <div id="totals">
+                                    <p>Delivery: Free</p>
                                     <p>Subtotal: $<?php echo number_format(round($subtotal, 2),2); ?></p>
                                     <h3>Grand Total: $<?php echo number_format(round($grandTotal, 2),2);?></h3>
                                 </div>
@@ -116,7 +117,8 @@ $order_id = 1;
             </table>
         </div>
         <div id="map">
-            <p>map here</p>
+            <h2>Trip Details</h2>
+            <iframe src="map.php" width="500px" height="500px" style="border:0;"></iframe>
         </div>
     </div>
 </body>
