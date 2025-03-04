@@ -1,0 +1,126 @@
+.container {
+    width: 90vw;
+    height: auto;
+    margin: 2vh 5vw;
+    padding: 0 10vw;
+
+    text-align: center;
+}
+.container #checkMark {
+    margin-top: 10vmin;
+    height: 20vmin;
+    width: 20vmin;
+    object-fit: cover;
+}
+.container h1 {
+    margin-top: 2vmin;
+    color: #B3C995;
+    font-size: 5rem;
+    -webkit-text-stroke: 1px #7FA06D;
+    overflow-wrap: break-word;  
+}
+.container p {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+.container button {
+    width: auto;
+    height: 60px;
+    padding: 5px 10px;
+    margin-top: 25px;
+
+    border: 2px solid #E7B76F;
+    border-radius: 5px;
+    background-color: #FFF1CB;
+
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    text-align: center;
+    font-size: 1.2rem;
+    
+    transition: 0.3s ease-in-out;
+}
+
+.container button:hover {
+    background-color: #C5E99B;
+    border: 2px solid #7FA06D;
+    height: 63px;
+}
+
+.container2 {
+    display: flex;
+    flex-flow: row;
+    margin: 40px 8% 2%;
+}
+
+#invoice {
+    margin-left: 0;
+    margin-right: auto;
+    padding: 15px;
+    width: 48%;
+}
+
+#invoice h2 {
+    margin-bottom: 10px;
+}
+
+#invoice table {
+    text-align: left;
+    width: 100%;
+    border-spacing: 15px;
+    border: 2px solid black;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+#invoice tr {
+    height: auto;
+}
+
+#invoice thead th, tbody td{
+    padding: 8px 20px 8px 10px;
+    border: 1px solid gray;
+}
+
+#invoice table tr:nth-child(even) {
+    background-color: #E4E4E4;
+}
+
+.summary {
+    border-top: 3px double black;
+}
+
+.overview {
+    display: flex;
+    flex-flow: row;
+}
+
+.overview #p1 {
+    margin-left: 10px;
+    margin-right: auto;
+    font-size: 0.9rem;
+}
+
+.overview #p2 {
+    margin-right: 10px;
+    margin-left: auto;
+    display: flex;
+}
+
+.overview #p2 #totals {
+    margin-top: auto;
+    margin-bottom: 0;
+}
+
+#totals p { 
+    text-align: right;  
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+
+
+#map {
+    margin-left: auto;
+    margin-right: 0;
+    background-color: lightpink;
+}

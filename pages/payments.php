@@ -129,7 +129,6 @@
                 <h3>Payment Details:</h3>
                 <form action="confirmation.php" method="POST">
                     <input type="text" value="<?php echo $grandTotal; ?>" name="grandTotal" style="display: none;" readonly>
-                    <input type="text" value="<?php echo $orderid; ?>" name="orderid" style="display: none;" readonly>
                     <label for="cardholder_name">Cardholder Name:</label>
                     <input type="text" id="cardholder_name"  name="cardholder_name" placeholder="Cardholder Name">
                     <label for="card_number">Card Number:</label>
