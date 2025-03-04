@@ -4,7 +4,6 @@
     session_start();
     //hide PHP warning messages
     error_reporting(E_ERROR);
-    $orderid = $_GET['orderid'];
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +50,7 @@
 
 
     <?php //only allow payment access if valid session and order number
-    if ($orderid != NULL && isset($_SESSION['account_type'])) {
+    if (isset($_SESSION['account_type'])) {
         $userID = $_SESSION['user_id']; ?>
         <div class="subheader">
             <a href="cart.php">Return to Shopping Cart</a>
@@ -78,7 +77,7 @@
                         $tax = 0.00;
                         //Referenced from shopping cart
                         //orderid is currently fixed
-                        $sql = "SELECT * FROM ShoppingCart WHERE order_id = 1 AND user_id = $userID";
+                        $sql = "SELECT * FROM ShoppingCart WHERE user_id = $userID";
                         $res = $conn->query($sql);
 
                         if ($res->num_rows > 0) {
@@ -129,6 +128,7 @@
             <div class="payments-container">
                 <h3>Payment Details:</h3>
                 <form action="confirmation.php" method="POST">
+                    <input type="text" value="<?php echo $grandTotal; ?>" name="grandTotal" style="display: none;" readonly>
                     <input type="text" value="<?php echo $orderid; ?>" name="orderid" style="display: none;" readonly>
                     <label for="cardholder_name">Cardholder Name:</label>
                     <input type="text" id="cardholder_name"  name="cardholder_name" placeholder="Cardholder Name">

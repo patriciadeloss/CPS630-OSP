@@ -68,10 +68,9 @@
                 $result = $GLOBALS['conn']->query($sql);
             }
             // if not, add a new entry w qty=1
-            // *** NOTE: order id is currently fixed !!
             else {
                 $userID = $GLOBALS['userID'];
-                $sql = "INSERT INTO ShoppingCart(order_id,item_id,user_id,quantity,price) VALUES(1,$droppedItemID,$userID,1,$itemPrice)";
+                $sql = "INSERT INTO ShoppingCart(item_id,user_id,quantity,price) VALUES($droppedItemID,$userID,1,$itemPrice)";
                 $result = $GLOBALS['conn']->query($sql);
             }
         }

@@ -64,11 +64,9 @@
                     <?php if (isset($_SESSION['account_type'])) { ?>
                         <!-- display user's shopping cart items -->
                         <?php
-                            // retrieve a user's entries for their curr order from the Shopping Cart Table
-                            // *** NOTE: order id is currently fixed !!
-                            $sql = "SELECT * FROM ShoppingCart WHERE order_id = 1 AND user_id = $userID";
+                            // retrieve a user's entries from the Shopping Cart Table
+                            $sql = "SELECT * FROM ShoppingCart WHERE user_id = $userID";
                             $result = $conn->query($sql);
-                            $orderid = 1;
 
                             if ($result->num_rows > 0) {
                                 while ($cartRow = $result->fetch_assoc()) {
@@ -139,7 +137,7 @@
             <div id="p2">
                 <!-- number_format to format 2 decimal places -->
                 <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>" ?>
-                <a href="payments.php?orderid=<?php echo $orderid?>"><button>Check Out</button></a>
+                <a href="payments.php"><button>Check Out</button></a>
             </div>
         </footer>
     </body>
