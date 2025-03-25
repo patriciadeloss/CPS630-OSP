@@ -129,41 +129,15 @@
                 <h3>Payment Details:</h3>
                 <form action="confirmation.php" method="POST">
                     <input type="text" value="<?php echo $grandTotal; ?>" name="grandTotal" style="display: none;" readonly>
-                    <label for="cardholder_name">Cardholder Name:</label>
-                    <input type="text" id="cardholder_name"  name="cardholder_name" placeholder="Cardholder Name">
-                    <label for="card_number">Card Number:</label>
-                    <input type="number" id="card_number" name="card_number" placeholder="Card Number">
-                    <div class="child-left" id="p3">
-                        <label for="exp_month">Expiry:</label>
-                        <label for="cvc">CVC:</label>
-                    </div>
-                    <div class="child-left" id="p4">
-                        <select name="exp_month" id="exp_month">
-                            <option value="" selected disabled>MM</option>
-                            <option value="01" >01</option>
-                            <option value="02" >02</option>
-                            <option value="03" >03</option>
-                            <option value="04" >04</option>
-                            <option value="05" >05</option>
-                            <option value="06" >06</option>
-                            <option value="07" >07</option>
-                            <option value="08" >08</option>
-                            <option value="09" >09</option>
-                            <option value="10" >10</option>
-                            <option value="11" >11</option>
-                            <option value="12" >12</option>
-                        </select>
-                        <select name="exp_year" id="exp_year">
-                            <option value="" selected disabled>YYYY</option>
-                        </select>
-                        <input type="text" id="cvc" name="cvc" maxlength="3"> </br>
-                    </div>
-                    <div id="payment_icons">
-                        <img src="../img/icons/visa.png" alt="">
-                        <img src="../img/icons/mastercard.png" alt="">
-                        <img src="../img/icons/jcb.png" alt="">
-                        <img src="../img/icons/amex.png" alt="">
-                    </div>
+
+                    <label for="payment_method">Select Payment Method:</label>
+                    <select id="payment_method" name="payment_method" required>
+                        <option value="" selected disabled>Select payment method</option>
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="cash">Cash</option>
+                        <option value="giftCard">Gift Card</option>
+                    </select>
+                    <div id="payment_details"></div>
                     <button>Pay Now</button>
                 </form>
             </div>
@@ -191,6 +165,71 @@
                 content = content + `<option value="${n}"> ${n} </option>`;
             }
             document.getElementById("exp_year").innerHTML = content;
+
         });
+
+        $(document).ready(function() {
+                // When the payment method is selected
+                $('#payment_method').change(function() {
+                    var paymentMethod = $(this).val();
+                    
+                    var paymentFields = '';
+
+                    // Dynamically generate payment fields based on the selected method
+                    if (paymentMethod === 'card') {
+                        paymentFields = `
+                            <label for="cardholder_name">Cardholder Name:</label>
+                            <input type="text" id="cardholder_name"  name="cardholder_name" placeholder="Cardholder Name">
+                            <label for="card_number">Card Number:</label>
+                            <input type="number" id="card_number" name="card_number" placeholder="Card Number">
+                            <div class="child-left" id="p3">
+                                <label for="exp_month">Expiry:</label>
+                                <label for="cvc">CVC:</label>
+                            </div>
+                            <div class="child-left" id="p4">
+                                <select name="exp_month" id="exp_month">
+                                    <option value="" selected disabled>MM</option>
+                                    <option value="01" >01</option>
+                                    <option value="02" >02</option>
+                                    <option value="03" >03</option>
+                                    <option value="04" >04</option>
+                                    <option value="05" >05</option>
+                                    <option value="06" >06</option>
+                                    <option value="07" >07</option>
+                                    <option value="08" >08</option>
+                                    <option value="09" >09</option>
+                                    <option value="10" >10</option>
+                                    <option value="11" >11</option>
+                                    <option value="12" >12</option>
+                                </select>
+                                <select name="exp_year" id="exp_year">
+                                    <option value="" selected disabled>YYYY</option>
+                                </select>
+                                <input type="text" id="cvc" name="cvc" maxlength="3"> </br>
+                            </div>
+                            <div id="payment_icons">
+                                <img src="../img/icons/visa.png" alt="">
+                                <img src="../img/icons/mastercard.png" alt="">
+                                <img src="../img/icons/jcb.png" alt="">
+                                <img src="../img/icons/amex.png" alt="">
+                            </div>
+                        `;
+                    } else if (paymentMethod === 'cash') {
+                        paymentFields = `
+                            <label for="cash_amount">Cash Amount:</label>
+                            <input type="number" id="cash_amount" name="cash_amount" min="0" step=".01" placeholder="Enter Cash Amount" required>
+                        `;
+                    } else if (paymentMethod === 'giftCard') {
+                        paymentFields = `
+                            <label for="gift_card_number">Gift Card Number:</label>
+                            <input type="text" id="gift_card_number" name="gift_card_number" placeholder="Enter Gift Card Number" required>
+                        `;
+                    }
+
+                    // Update the payment details section with the generated fields
+                    $('#payment_details').html(paymentFields);
+                });
+            });
+
     </script>
 </html>
