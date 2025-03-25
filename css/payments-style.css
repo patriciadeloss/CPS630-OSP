@@ -26,11 +26,11 @@
 }
 
 .container2 {
-    width: 100vw;
+    width: 100%; /* Fixed overflow issue */
     padding: 1% 6%;
     display: flex;
     flex-flow: row;
-    
+    align-items: flex-start; /* Added to prevent the size of summary-container from changing */
 }
 
 .summary-container {
