@@ -5,12 +5,11 @@ include("../external-php-scripts/database.php");
 include("../external-php-scripts/security.php"); 
 // Superglobal used to collect form data via the POST method
 $grand_total = $_POST['grandTotal'];
-$card_number = $_POST['card_number'];
+$payment_method = $_POST['payment_method'];
 // Superglobal used to store session variables across multiple pages
 $user_id = $_SESSION['user_id'];
 $store_code = $_SESSION['branch_code'];
 $cur_date = date("Y-m-d"); //get current date
-$last_four = substr($card_number, -4); // get the last four digits of card number
 
 //create entry in database for Shopping and output generated value
 $sql = "INSERT INTO Shopping (store_code, total_price) VALUES ('" . $store_code . "', $grand_total)";
@@ -20,10 +19,30 @@ $conn->query($sql);
 //insert_id returns the ID generated in the last query
 $receipt_id = $conn->insert_id;
 
+if (isset($_POST['card_number'])) {
+    $card_number = $_POST['card_number'];
+    $last_four = substr($card_number, -4); // get the last four digits of card number
+} else {
+    $card_number = null;
+}
+
+if (isset($_POST['gift_card_number'])) {
+    $gift_card_number = $_POST['gift_card_number'];
+} else {
+    $gift_card_number = null;
+}
 
 //create entry for orders table
 //**currently doesn't create entries for payment_code and trip_id fields
-$order_id = insertOrder($cur_date, $cur_date, $grand_total, $user_id, $receipt_id, $card_number);  
+if ($payment_method === 'card' && $card_number) {
+    $order_id = insertOrder($cur_date, $cur_date, $grand_total, $user_id, $receipt_id, $card_number);
+
+} elseif ($payment_method === 'giftCard' && $gift_card_number) {
+    $order_id = insertOrder($cur_date, $cur_date, $grand_total, $user_id, $receipt_id, $gift_card_number);
+
+} elseif ($payment_method === 'cash' && isset($_POST['cash_amount'])) {
+    $order_id = insertOrder($cur_date, $cur_date, $grand_total, $user_id, $receipt_id, "Cash Payment");
+}
 
 ?>
 
@@ -102,7 +121,7 @@ $order_id = insertOrder($cur_date, $cur_date, $grand_total, $user_id, $receipt_i
                                 <p>Number of Items: <?php echo $grandQty ?></p>
                                 <p>Tax: $<?php echo number_format(round($tax, 2),2); ?></p>
                                 <p>Order ID: <?php echo $order_id; ?></p>
-                                <p>Card Ending in <?php echo $last_four; ?></p>
+                                <p>Card Ending in <?php echo isset($_POST['card_number']) ? $last_four : "####"; ?></p>
                             </div>
                             <div id="p2">
                                 <div id="totals">
