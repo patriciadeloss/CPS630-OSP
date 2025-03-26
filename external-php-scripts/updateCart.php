@@ -1,13 +1,13 @@
 <?php
     if (isset($_SESSION['user_id'])) { 
         $userID = $_SESSION['user_id'];
-    }
 
-    if (isset($_SERVER['HTTP_REFERER'])) {
-        $httpReferer = ($_SERVER['HTTP_REFERER']);
-
-        if (str_ends_with($httpReferer,'cart.php')) { updateCartOnButtonClick(); }
-        else { updateCartOnDrop(); }
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            $httpReferer = ($_SERVER['HTTP_REFERER']);
+    
+            if (str_ends_with($httpReferer,'cart.php')) { updateCartOnButtonClick(); }
+            else { updateCartOnDrop(); }
+        }
     }
 
     /* Functions */
