@@ -42,23 +42,32 @@
         }
     }
 
-    function insertOrder($date_issued, $date_received, $grand_total, $user_id, $receipt_id, $cardNumber) {
-        $card_salt = generateRandomSalt();
-        
+    function insertOrder($date_issued, $date_received, $grand_total, $user_id, $receipt_id, $payment_info) {
         try {
-            $hashed_cn = md5($cardNumber . $card_salt);
-
-            // Insert date, total price, user id, receipt id, hashed card number & salt into the database
-            $sql = "INSERT INTO Orders (date_issued, date_received, total_price, user_id, receipt_id, card_number, card_salt) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-            $stmt = $GLOBALS['conn']->prepare($sql);
-            $stmt->bind_param("ssdiiss", $date_issued, $date_received, $grand_total, $user_id, $receipt_id, $hashed_cn, $card_salt);
+            if ($payment_info === "Cash Payment") {
+                // Insert without salt
+                $sql = "INSERT INTO Orders (date_issued, date_received, total_price, user_id, receipt_id, payment_info, payment_salt) 
+                        VALUES (?, ?, ?, ?, ?, ?, NULL)";
+        
+                $stmt = $GLOBALS['conn']->prepare($sql);
+                $stmt->bind_param("ssdiis", $date_issued, $date_received, $grand_total, $user_id, $receipt_id, $payment_info);
+            } else {
+                // Insert with salt
+                $card_salt = generateRandomSalt();
+                $hashed_payment_info = md5($payment_info . $card_salt);
+        
+                $sql = "INSERT INTO Orders (date_issued, date_received, total_price, user_id, receipt_id, payment_info, payment_salt) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+                $stmt = $GLOBALS['conn']->prepare($sql);
+                $stmt->bind_param("ssdiiss", $date_issued, $date_received, $grand_total, $user_id, $receipt_id, $hashed_payment_info, $card_salt);
+            }
+    
             $stmt->execute();
-
             $order_id = $GLOBALS['conn']->insert_id;
-            return $order_id;  // Return the order_id
 
+            return $order_id;  // Return the order_id
+    
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
