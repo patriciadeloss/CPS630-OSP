@@ -1,6 +1,7 @@
 <?php 
 
 include("database.php");
+$conn = getDBConnection();
 
 try {
     // Create table
@@ -24,6 +25,7 @@ try {
         city_code CHAR(3),
         login_id VARCHAR(30) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
+        salt VARCHAR(64) NOT NULL,
         balance DECIMAL(10,2) DEFAULT 0
     )";
     $conn->query($sql);

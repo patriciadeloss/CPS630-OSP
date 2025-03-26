@@ -1,51 +1,56 @@
 <?php
-session_start();
-include("../external-php-scripts/database.php");
+    session_start();
+    include("../external-php-scripts/database.php");
+    include("../external-php-scripts/security.php");
 
-// If the user is already logged in, redirect them to the appropriate page
-if (isset($_SESSION['user_id'])) {
-    $user_role = $_SESSION['account_type'];
-    if ($user_role == 0) {  // Admin
-        header("Location: admin.php");
-        exit();
-    } else if ($user_role == 1) {  // User
-        header("Location: index.php");
-        exit();
+    // If the user is already logged in, redirect them to the appropriate page
+    if (isset($_SESSION['user_id'])) {
+        $user_role = $_SESSION['account_type'];
+        if ($user_role == 0) {  // Admin
+            header("Location: admin.php");
+            exit();
+        } else if ($user_role == 1) {  // User
+            header("Location: index.php");
+            exit();
+        }
     }
-}
 
-$error_message = '';
+    $error_message = '';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $login_id = $_POST['username'];
-    $password = $_POST['password'];
+    // Handle form submission accordingly
+    if (isset($_POST['username']) && !empty($_POST['username']) && 
+        isset($_POST['password']) && !empty($_POST['password'])) {
 
-    $sql = "SELECT * FROM Users WHERE login_id = '$login_id'";
-    $result = $conn->query($sql);
+        $login_id = $_POST['username'];
+        $password = $_POST['password'];
 
-    if ($result->num_rows == 1) {
-        $user = $result->fetch_assoc();
+        $validateUser = validateUser($login_id,$password);
 
-        if ($password === $user['password']) {
-            $_SESSION['user_id'] = $user['user_id'];
-            $_SESSION['name'] = $user['name'];
-            $_SESSION['account_type'] = $user['account_type'];
+        if (!$validateUser) { $error_message = 'User not found.'; }
+        else if($validateUser === -1) { $error_message = 'Invalid login credentials.'; }
+        else {
+            $sql = "SELECT user_id, account_type, name FROM Users WHERE login_id = ?"; 
+            $result = $GLOBALS['conn']->prepare($sql);
+            $result->bind_param("s", $login_id);
+            $result->execute();
+            $result->store_result();
+            $result->bind_result($user_id, $account_type, $name);
+            $result->fetch();
+
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['name'] = $name;
+            $_SESSION['account_type'] = $account_type;
             session_write_close();
             ob_end_flush();
 
-            if ($user['account_type'] == 0) {
+            if ($account_type == 0) {
                 header("Location: admin.php");
             } else {
                 header("Location: index.php");
             }
             exit();
-        } else {
-            $error_message = 'Invalid login credentials.';
         }
-    } else {
-        $error_message = 'User not found.';
     }
-}
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <body>
         <?php include("header.php"); ?>
-        <form action="" method="POST" id="user-form">
+        <form action="signin.php" method="POST" id="user-form">
             <legend>Sign In</legend>
 
             <div class="form-container">
@@ -77,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <button type="submit" class="enable">Sign In</button>
-            <p style="color: red; text-align: center;"><?php echo $error_message; ?></p>
+            <p style="font-size: 12px; color: red; text-align: center;"><?php echo $error_message; ?></p>
         </form>
     </body>
 </html>

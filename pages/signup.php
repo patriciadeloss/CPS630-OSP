@@ -1,34 +1,28 @@
 <?php
-include("../external-php-scripts/database.php");
+    include("../external-php-scripts/database.php");
+    include("../external-php-scripts/security.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $tel_no = $_POST['phone_number'];
-    $login_id = $_POST['username'];
-    $password = $_POST['password'];
-    $user_role = isset($_POST['account_type']) ? (int) $_POST['account_type'] : 1;  // 0 = Admin, 1 = User, Default = 1
+    // Handle form submission accordingly
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Check if the username already exists
-    $sql_check = "SELECT * FROM Users WHERE login_id = '$login_id'";
-    $result_check = $conn->query($sql_check);
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $tel_no = $_POST['phone_number'];
+        $login_id = $_POST['username'];
+        $password = $_POST['password'];
+        $user_role = isset($_POST['account_type']) ? (int) $_POST['account_type'] : 1;  // 0 = Admin, 1 = User, Default = 1
 
-    if ($result_check->num_rows > 0) {
-        // Display message
-        echo '<p style="color: red; text-align: center;">You already have an account. Please <a href="signin.php">sign in</a>.</p>';
-    } else {
-        // Inserts the new user
-        $sql = "INSERT INTO Users (name, email, tel_no, login_id, password, account_type) 
-                VALUES ('$name', '$email', '$tel_no', '$login_id', '$password', $user_role)";
-        
-        if ($conn->query($sql) === TRUE) {
+        $validateUser = validateUser($login_id,$password);
+
+        if ($validateUser === true) { 
+            echo '<p style="color: red; text-align: center;">You already have an account. Please <a href="signin.php">sign in</a>.</p>';
+        }
+        else if ($validateUser === false) {
+            insertUser($name, $email, $tel_no, $login_id, $password, $user_role);
             header("Location: signin.php"); // redirects to sign up page
             exit();
-        } else {
-            echo "Error: " . $conn->error;
         }
     }
-}
 ?>
     
 <!DOCTYPE html>
@@ -44,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <body>
         <?php include("header.php"); ?>
-        <form action="" method="POST" id="user-form">
+        <form action="signup.php" method="POST" id="user-form">
             <legend>Sign Up</legend>
             
             <div class="form-container">
@@ -86,12 +80,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-container"> 
                 <p style="display: inline;">Already have an account?</p>
-                <a href="signin.php">Sign in here</a>
+                <a href="signin.php">Sign up here</a>
             </div>
 
-            <div id="submit-btn">
-                <button type="submit" class="disable" disabled>Sign Up</button>
-            </div>
+            <button type="submit" class="enable">Sign Up</button>
         </form>
 
 
