@@ -28,11 +28,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Display messages
-        if (!empty($sql) && $conn->query($sql) === TRUE) {
-            $message = '<p style="text-align: center; color: green;">Record deleted successfully.</p>';
-        } elseif (!empty($sql)) {
-            $message = '<p style="text-align: center; color: red;">Error deleting record: ' . $conn->error . '</p>';
+        try {
+            $conn->query($sql);
+
+            if (!empty($sql) && $conn->query($sql) === TRUE) {
+                $message = '<p style="text-align: center; color: green;">Record deleted successfully.</p>';
+            } elseif (!empty($sql)) {
+                $message = '<p style="text-align: center; color: red;">Error deleting record: ' . $conn->error . '</p>';
+            }
+        } catch (Exception $e) {
+            $message = "<p style='text-align: center; color: red;'>Invalid query: " . $e->getMessage() . "</p>";
         }
+
     } else {
         $message = '<p style="text-align: center; color: red;">Please select a table, specify a field, and set a condition.</p>';
     }
