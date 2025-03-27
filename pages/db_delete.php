@@ -4,7 +4,7 @@ include("../external-php-scripts/database.php");
 echo '<link rel="stylesheet" type="text/css" href="../css/base-style.css">';
 include("header.php");
 
-$tables = ["Item", "Users", "Truck", "Trips", "Shopping", "Orders", "ShoppingCart"];
+$tables = ["Item", "Users", "Truck", "Trips", "Shopping", "Orders", "ShoppingCart", "Reviews"];
 
 // Initialize variables
 $sql = ""; 
