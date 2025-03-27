@@ -1,0 +1,113 @@
+body { height: 100vh; }
+
+section {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 0.75fr 2fr;
+}
+
+article:first-child {
+    padding: 30px 30px 23px 23px;
+    color: grey;
+    border-right: solid 1.75px #e7e6e6;
+}
+
+article:first-child form legend {
+    font-size: 20px;
+    color: black;
+    font-weight: 700;
+}
+
+article:first-child form option, article:first-child form textarea {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
+article:first-child form textarea {
+    width: 100%;
+    resize: none;  
+}
+
+article:first-child form button {
+    padding: 6px;
+    text-decoration: none;
+    letter-spacing: 0.25ch;
+    border-radius: 0.25rem;
+    background-color: #8FBC94;
+    color: white; 
+    border: 2px solid #8FBC94;
+
+    transition: background-color 1s;
+}
+
+article:first-child form button:hover {
+    background-color: white;
+    color: #8FBC94; 
+}
+
+article:first-child form:first-child {
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 1px 0px 4px #f1f1f1;
+}
+
+article:first-child form:first-child .form-container {
+    padding: 2px;
+}
+
+article:last-child {
+    padding: 30px 23px 23px 30px;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 30px;
+}
+
+.review-card {
+    background: #FFF1CB;
+    box-shadow: 0 2px 6px rgb(206, 202, 202);
+    text-align: left;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.review-card-top {
+    display: flex;
+    flex-flow: row;
+    gap: 8px;
+}
+
+.review-card-top p {
+    margin-left: auto
+}
+
+.review-card-top p, .review-card-bottom p:not(:last-child) {
+    font-size: 13px;
+    font-weight: 400;
+    color: grey;
+}
+
+.review-card-bottom p {
+    white-space: normal;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+/* Breakpoints */
+
+@media only screen and (max-width: 640px) {
+    section {
+        grid-template-columns: 1fr;
+    }
+    article:first-child {
+        border-bottom: solid 1.75px #e7e6e6;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    article:last-child {
+        grid-template-columns: 1fr;
+    }
+}
