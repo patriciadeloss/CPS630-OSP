@@ -1,7 +1,6 @@
 <?php 
 
 include("database.php");
-$conn = getDBConnection();
 
 try {
     // Create table
@@ -71,6 +70,8 @@ try {
         user_id INT(6) UNSIGNED,
         trip_id INT(6) UNSIGNED,
         receipt_id INT(6) UNSIGNED,
+        card_number VARCHAR(20) NOT NULL,
+        card_salt VARCHAR(64) NOT NULL,
         FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
         FOREIGN KEY (trip_id) REFERENCES Trips(trip_id) ON DELETE CASCADE, 
         FOREIGN KEY (receipt_id) REFERENCES Shopping(receipt_id) ON DELETE CASCADE
@@ -82,6 +83,18 @@ try {
         user_id INT(6) UNSIGNED,
         quantity INT NOT NULL,
         price DECIMAL(10, 2),
+        FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE
+    )";
+    $conn->query($sql);
+
+    $sql = "CREATE TABLE IF NOT EXISTS Reviews (
+        review_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        user_id INT(6) UNSIGNED, 
+        item_id INT(6) UNSIGNED NOT NULL,
+        rating DECIMAL(10,1) CHECK (rating>=1 AND rating<=5), 
+        review_text VARCHAR(60) NOT NULL,
+        time_stamp DATE NOT NULL DEFAULT CURRENT_DATE,
         FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
         FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE
     )";
