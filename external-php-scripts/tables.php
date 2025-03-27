@@ -70,8 +70,8 @@ try {
         user_id INT(6) UNSIGNED,
         trip_id INT(6) UNSIGNED,
         receipt_id INT(6) UNSIGNED,
-        card_number VARCHAR(20) NOT NULL,
-        card_salt VARCHAR(64) NOT NULL,
+        payment_info VARCHAR(20) NOT NULL,
+        payment_salt VARCHAR(64),
         FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
         FOREIGN KEY (trip_id) REFERENCES Trips(trip_id) ON DELETE CASCADE, 
         FOREIGN KEY (receipt_id) REFERENCES Shopping(receipt_id) ON DELETE CASCADE
