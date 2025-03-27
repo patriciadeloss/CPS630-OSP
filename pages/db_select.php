@@ -9,29 +9,51 @@ $tables = ["Item", "Users", "Truck", "Trips", "Shopping", "Orders", "ShoppingCar
 // Initialize variables
 $sql = "";
 $result = null;
+$message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($_POST['table']) && !empty($_POST['fields'])) {
         $table = $_POST['table'];
         $fields = $_POST['fields'];
-        // If conditions are not provided, then set it to empty string
+
+        // If condition isn't provided, set it to the empty string
         $conditions = isset($_POST['conditions']) ? $_POST['conditions'] : '';
 
         // If condition is provided
         if (!empty($conditions)) {
-            // Split the condition into field and value
-            list($field, $value) = explode('=', $conditions);
+            // Determine the operator and make a split according to this operator 
+            if (preg_match('/(=|>=|>|<=|<)/',$conditions, $matches)) {
 
-            // Check if the value is numeric or a string
-            if (is_numeric($value)) {
-                // If it's numeric, then no quotes needed
-                $value = $value;
-            } else {
-                // But if it's a string, quote it
-                $value = "'" . $value . "'";
+                $operator = $matches[0]; // Get the matched operator
+                list($field,$value) = explode($operator,$conditions);
+
+                // Check if the value is numeric or a string
+                // If it's numeric, no quotes are needed
+                if (is_numeric(trim($value))) { $value = trim($value); }
+                // Otherwise quotes are needed
+                else { $value = "'" . trim($value) . "'"; }
+
+                // Construct the condition
+                switch ($operator) {
+                    case '=':
+                        $conditions = $field . "=" . $value;
+                        break;
+                    case '>=':
+                        $conditions = $field . ">=" . $value;
+                        break;
+                    case '>':
+                        $conditions = $field . ">" . $value;
+                        break;
+                    case '<=':
+                        $conditions = $field . "<=" . $value;
+                        break;
+                    case '<':
+                        $conditions = $field . "<" . $value;
+                        break;
+                    default:
+                        break;
+                }
             }
-
-            $conditions = $field . "=" . $value;
         }
 
         // SELECT Statement
@@ -41,9 +63,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Execute the query
-        $result = $conn->query($sql);
+        try {
+            $result = $conn->query($sql);
+        } catch (Exception $e) {
+            $message = "<p style='text-align: center; color: red;'>Invalid query: " . $e->getMessage() . "</p>";
+        }
+
     } else {
-        echo '<p style="text-align: center; color: red;">Please select a table and specify fields.</p>';
+        $message = '<p style="text-align: center; color: red;">Please select a table, specify a field, and set a condition.</p>';
     }
 }
 ?>
@@ -98,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Determine rows
         while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
+            echo "<tr>"; 
             foreach ($fields_array as $field) {
                 echo "<td>" . htmlspecialchars($row[trim($field)]) . "</td>";
             }
@@ -106,9 +133,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         echo "</table>";
     } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-        echo '<p style="text-align: center; color: red;">No records found.</p>';
+        $message = '<p style="text-align: center; color: red;">No records found.</p>';
     }
 
+    echo $message;
     $conn->close();
     ?>
 </body>
