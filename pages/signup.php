@@ -109,7 +109,7 @@
             </div>
             <div class="form-container"> 
                 <p style="display: inline;">Already have an account?</p>
-                <a href="signin.php">Sign up here</a>
+                <a href="signin.php">Sign in here</a>
             </div>
 
             <button type="submit" class="enable">Sign Up</button>
