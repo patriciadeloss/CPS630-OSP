@@ -107,7 +107,7 @@
                             } else {
                                 echo "
                                     <tr>
-                                        <td class=\"span-all\"> <p style=\"text-align: center;\"> Your Shopping Cart is Empty </p> </td>
+                                        <td class=\"span-all\"> <p style=\"text-align: center;\"> Your Shopping Cart is empty</p> </td>
                                     </tr>
                                 ";
                             }
@@ -135,9 +135,14 @@
                 ?>
             </div>
             <div id="p2">
-                <!-- number_format to format 2 decimal places -->
-                <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>" ?>
-                <a href="payments.php"><button>Check Out</button></a>
+                <?php 
+                    // number_format to format 2 decimal places 
+                    echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>";
+
+                    // Prevents the ability to proceed to checkout when the balance is 0.00
+                    if ($grandTotal > 0) { echo "<a href='payments.php'><button name='checkout'>Check Out</button></a>"; } 
+                    else { echo "<a href=''><button name='checkout'>Check Out</button></a>"; }
+                ?>
             </div>
         </footer>
     </body>
