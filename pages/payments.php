@@ -138,6 +138,7 @@
                         <option value="giftCard">Gift Card</option>
                     </select>
                     <div id="payment_details"></div>
+
                     <button>Pay Now</button>
                 </form>
             </div>
@@ -201,7 +202,7 @@
             } else if (paymentMethod === 'cash') {
                 paymentFields = `
                     <label for="cash_amount">Cash Amount:</label>
-                    <input type="number" id="cash_amount" name="cash_amount" min=".05" step=".05" placeholder="Enter Cash Amount" required>
+                    <input type="number" id="cash_amount" name="cash_amount" min="<?php echo number_format(round($grandTotal, 2),2); ?>" step=".05" placeholder="Enter Cash Amount" required>
                 `;
             } else if (paymentMethod === 'giftCard') {
                 paymentFields = `
