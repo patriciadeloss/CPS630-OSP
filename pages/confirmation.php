@@ -121,7 +121,15 @@ if ($payment_method === 'card' && $card_number) {
                                 <p>Number of Items: <?php echo $grandQty ?></p>
                                 <p>Tax: $<?php echo number_format(round($tax, 2),2); ?></p>
                                 <p>Order ID: <?php echo $order_id; ?></p>
-                                <p>Card Ending in <?php echo isset($_POST['card_number']) ? $last_four : "####"; ?></p>
+                                <?php 
+                                    if ($payment_method === 'card' && isset($_POST['card_number'])) {
+                                        echo "<p>Card Ending in " . $last_four . "</p>";
+                                    } elseif ($payment_method === 'giftCard' && isset($gift_card_number)) {
+                                        echo "<p>Gift Card Number: " . $gift_card_number . "</p>";
+                                    } elseif ($payment_method === 'cash' && isset($_POST['cash_amount'])) {
+                                        echo "<p>Cash Amount: $" . $_POST['cash_amount'] . "</p>";
+                                    }                                    
+                                ?>
                             </div>
                             <div id="p2">
                                 <div id="totals">
