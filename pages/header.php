@@ -64,6 +64,7 @@
                         <a href="db_delete.php">Delete</a>
                         <a href="db_select.php">Select</a>
                         <a href="db_update.php">Update</a>
+                        <a href="db_sales.php">Product Sales</a>
                     </div>
                 </div>
             <?php } ?>
