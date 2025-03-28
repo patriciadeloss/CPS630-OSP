@@ -1,0 +1,29 @@
+section {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 0.75fr 2fr;
+}
+
+article:first-child {
+    padding: 30px 30px 23px 23px;
+    color: grey;
+    border-right: solid 1.75px #e7e6e6;
+}
+
+table {
+    margin: 0 auto;
+}
+
+table, tr, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 4px;
+    text-align: center;
+}
+
+#db-form {
+    width: 75%;
+}
