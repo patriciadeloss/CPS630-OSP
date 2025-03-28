@@ -8,6 +8,7 @@ try {
         item_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         item_name VARCHAR(30) NOT NULL,
         price DECIMAL(10,2) NOT NULL,
+        sales_price DECIMAL(10,2),
         percent_off DECIMAL(10,2) DEFAULT 0.0, /* ie. 25% = 0.25 */
         made_in VARCHAR(50), 
         department_code VARCHAR(10),
