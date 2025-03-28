@@ -27,12 +27,3 @@ th, td {
 #db-form {
     width: 75%;
 }
-
-@media only screen and (max-width: 640px) {
-    section {
-        grid-template-columns: 1fr;
-    }
-    article:first-child {
-        border-bottom: solid 1.75px #e7e6e6;
-    }
-}

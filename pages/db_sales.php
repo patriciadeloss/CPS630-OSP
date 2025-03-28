@@ -45,7 +45,7 @@
             $sql = "UPDATE Item SET percent_off = " . 0 . " WHERE item_id = " . $itemID;
             $GLOBALS['conn']->query($sql);
         }
-        $GLOBALS['remove_sale_message'] = '<p style="text-align: center; color: green;">Sale removed!</p>';
+        $GLOBALS['apply_sale_message'] = '<p style="text-align: center; color: green;">Sale removed!</p>';
     }
 ?>
 
