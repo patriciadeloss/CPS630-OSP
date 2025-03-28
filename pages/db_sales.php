@@ -25,9 +25,15 @@
             if ($itemID == "*") {
                 $sql = "UPDATE Item SET percent_off = " . $percentOff/100;
                 $GLOBALS['conn']->query($sql);
+
+                $sql = "UPDATE Item SET sales_price = price * (1 -" . $percentOff ."/ 100)";
+                $GLOBALS['conn']->query($sql);
             }
             else {
                 $sql = "UPDATE Item SET percent_off = " . $percentOff/100 . " WHERE item_id = " . $itemID;
+                $GLOBALS['conn']->query($sql);
+
+                $sql = "UPDATE Item SET sales_price = price * (1 -" . $percentOff ."/ 100) WHERE item_id = " . $itemID;
                 $GLOBALS['conn']->query($sql);
             }
             $GLOBALS['apply_sale_message'] = '<p style="text-align: center; color: green;">Sale applied!</p>';
@@ -40,9 +46,15 @@
         if ($itemID == "*") {
             $sql = "UPDATE Item SET percent_off = 0";
             $GLOBALS['conn']->query($sql);
+
+            $sql = "UPDATE Item SET sales_price = NULL";
+            $GLOBALS['conn']->query($sql);
         }
         else {
             $sql = "UPDATE Item SET percent_off = " . 0 . " WHERE item_id = " . $itemID;
+            $GLOBALS['conn']->query($sql);
+
+            $sql = "UPDATE Item SET sales_price = NULL WHERE item_id = " . $itemID;
             $GLOBALS['conn']->query($sql);
         }
         $GLOBALS['remove_sale_message'] = '<p style="text-align: center; color: green;">Sale removed!</p>';
