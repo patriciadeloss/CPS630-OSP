@@ -13,7 +13,7 @@
             $branch_location = $branch_info[1]; // retrieve branch address
             $_SESSION['home_address'] = $home_address; // Store in session
             $_SESSION['branch_location'] = $branch_location; // Store branch location in session
-            $_SESSION['branch_code'] = $branch_code; // Store branch location in session
+            $_SESSION['branch_code'] = $branch_code; // Store branch code in session
 
             if (isset($_SESSION['user_id'])) {
                 $user_id = $_SESSION['user_id'];
@@ -74,7 +74,7 @@
                                 }
                                 
                                 //Array() does not get posted properly 
-                                //implode array to string to post its value through the form
+                                //implode *array to string* to post its value through the form
                                 $imp_branch = implode('//' , $branch);
                                 echo "<option value=\"$imp_branch\" $selected>$branch[1]</option>";
                             }
@@ -85,28 +85,33 @@
                 <button class="save-btn" type="submit">Save Address</button>
             </form>
         </div>
-        <!-- Added a temporary link here to test the map functionality -->
-        <a href="map.php" class="map-btn">View Map</a>
     <?php } ?>
 
     <?php
     // Fetch items from the database
     try {
-        $sql = "SELECT item_id, item_name, price, made_in, department_code, image_url FROM Item";
+        $sql = "SELECT item_id, item_name, price, sales_price, made_in, department_code, image_url FROM Item";
         $result = $conn->query($sql);
     
         if ($result->num_rows > 0) {
             echo '<div class="product-grid">';
     
             while ($row = $result->fetch_assoc()) {
+                if (isset($row["sales_price"])) {
+                    $display_price = '<p class="price">$' . number_format($row["sales_price"], 2) . '</p>'
+                        . '<p class="original-price" style="text-decoration: line-through; color: gray;">$' . number_format($row["price"], 2) . '</p>';
+                } else {
+                    $display_price = '<p class="price">$' . number_format($row["price"], 2) . '</p>';
+                }
+            
                 echo '<div class="card" draggable="true" ondragstart="drag(event)" id="' . htmlspecialchars($row["item_id"]) . '">'
                     . '<img src="../img/' . htmlspecialchars($row["image_url"]) . '" alt="Product Image" ' . 'draggable="true" ondragstart="drag(event)" id="' . htmlspecialchars($row["item_id"]) . '">'
-                        . '<h3>' . htmlspecialchars($row["item_name"]) . '</h3>'
-                        . '<p class="price">$' . number_format($row["price"], 2) . '</p>'
-                        . '<p class="details">Made in: ' . htmlspecialchars($row["made_in"]) . '</p>'
-                        . '<p class="details">Dept code: ' . htmlspecialchars($row["department_code"]) . '</p>'
+                    . '<h3>' . htmlspecialchars($row["item_name"]) . '</h3>'
+                    . $display_price . '<p class="details">Made in: ' . htmlspecialchars($row["made_in"]) . '</p>'
+                    . '<p class="details">Dept code: ' . htmlspecialchars($row["department_code"]) . '</p>'
                     . '</div>';
             }
+            
     
             echo '</div>';
         } else {
@@ -116,5 +121,7 @@
         echo "Error: " . $e->getMessage();
     }        
 ?>
+
+
 </body>
 </html>
