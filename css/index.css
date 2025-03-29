@@ -86,8 +86,24 @@ body {
     border-radius: 5px;
 }
 
-.price {
+.og-price {
+    display: inline; 
+    font-size: 11px;
+    text-decoration: line-through;
+    color: gray;
+}
+
+.curr-price {
+    display: inline;
     font-size: 20px;
     font-weight: bold;
     color: #6DA34D;
+}
+
+.percent-off {
+    padding: 3px;
+    font-size: 11px;
+    color: white;
+    background-color: #f73333;
+    border-radius: 5px;
 }
