@@ -106,14 +106,21 @@ try {
     echo "Error creating table: " . $e->getMessage() . "<br>";
 }
 
-// Inserting Products
 try {
+    // Inserting Products
     $sql = "INSERT INTO Item (item_name, price, made_in, department_code, image_url) VALUES
         ('Chapmans Ice Cream', 7.28, 'Canada', 'FRU01', 'ice-cream.webp'),
         ('Great Value Chicken Nuggets', 9.77, 'Canada', 'FRU02', 'chicken-nuggets.jpg'),
         ('Sealtest Partly Skimmed Milk', 6.25, 'Canada', 'DAI01', 'sealtest-milk.webp'),
         ('Philadelphia Cream Cheese', 4.58, 'UK', 'DAI02' ,'cheese.png')";
     
+    $conn->query($sql);
+
+    // Inserting Trucks
+    $sql = "INSERT INTO Truck (truck_code, avail_code) VALUES
+        ('TRK001', 'Available'),
+        ('TRK002', 'Available'),
+        ('TRK003', 'Unavailable')";
     $conn->query($sql);
 
 
