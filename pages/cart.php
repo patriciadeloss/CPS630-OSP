@@ -1,4 +1,5 @@
 <?php
+    // Stores user data across multiple pages
     session_start();
     include("../external-php-scripts/database.php");
     include("../external-php-scripts/updateCart.php");
@@ -58,20 +59,21 @@
                     </tr>
                 </thead>
                 <tbody class="cart-container">
-                    <?php $grandTotal = 0.00; $grandQty = 0; ?>
+                    <?php $grandTotal = 0.00; $grandQty = 0; $totalDiscount = 0.00;?>
                     
                     <!-- If user is logged in, display cart -->
                     <?php if (isset($_SESSION['account_type'])) { ?>
+
                         <!-- display user's shopping cart items -->
                         <?php
                             // retrieve a user's entries from the Shopping Cart Table
                             $sql = "SELECT * FROM ShoppingCart WHERE user_id = $userID";
                             $result = $conn->query($sql);
-
+                            
                             if ($result->num_rows > 0) {
                                 while ($cartRow = $result->fetch_assoc()) {
                                     // for the curr fetched item from the Cart table,
-                                    
+
                                     // add its total price to the order total,
                                     $grandTotal = $grandTotal+$cartRow['price'];
                                     // increment item count of order,
@@ -81,6 +83,16 @@
                                     $sql = "SELECT * FROM Item WHERE item_id = " . $cartRow['item_id'];
                                     $result2 = $conn->query($sql); 
                                     $itemRow = $result2->fetch_assoc();
+
+                                    if (isset($itemRow['sales_price']) && $itemRow['sales_price'] > 0) {
+                                        // Calculate discount per item
+                                        $discountPerItem = ($itemRow['price'] - $itemRow['sales_price']) * $cartRow['quantity'];
+                                        $totalDiscount += $discountPerItem;
+                                        $itemPrice = "<p class='price'>$" . $itemRow['sales_price'] . "</p>" 
+                                        . "<p class='original-price' style='text-decoration: line-through; color: gray;'>$" . $itemRow['price'] . "</p>";
+                                    } else {
+                                        $itemPrice = "<p class='price'>$" . $itemRow['price'] . "</p>";
+                                    } 
                                     
                                     echo "
                                         <tr>
@@ -91,7 +103,8 @@
                                                     <p>Item details</p>
                                                 </div>
                                             </td>
-                                            <td id='price'> $" . htmlspecialchars($itemRow['price']) . "</td>
+                                            <td id='price'>" . $itemPrice . "</td>
+                                            
                                             <td id='amountSelector'>
                                                 <form action='cart.php' method='POST'>
                                                     <input type='text' name='updateItemID' id='updateItemID' value='" . $cartRow['item_id'] . "' style='display:none;'>
@@ -107,7 +120,7 @@
                             } else {
                                 echo "
                                     <tr>
-                                        <td class=\"span-all\"> <p style=\"text-align: center;\"> Your Shopping Cart is empty</p> </td>
+                                        <td class=\"span-all\"> <p style=\"text-align: center;\"> Your Shopping Cart is Empty </p> </td>
                                     </tr>
                                 ";
                             }
@@ -127,7 +140,7 @@
         <footer class="overview">
             <div id="p1">
                 <?php echo "<p>Number of items: <span id='numItems'>" . $grandQty . "</span></p>" ?>
-                <p>Discounts: $<span id="discount">0.00</span></p>
+                <?php echo "<p>Discounts: $<span id='discount'>" . number_format(round($totalDiscount, 2), 2) . "</span></p>" ?>
                 <?php 
                     $tax = $grandTotal*0.13;
                     //number_format to format 2 decimal places
@@ -135,15 +148,13 @@
                 ?>
             </div>
             <div id="p2">
-                <?php 
-                    // number_format to format 2 decimal places 
-                    echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>";
-
-                    // Prevents the ability to proceed to checkout when the balance is 0.00
-                    if ($grandTotal > 0) { echo "<a href='payments.php'><button name='checkout'>Check Out</button></a>"; } 
-                    else { echo "<a href=''><button name='checkout'>Check Out</button></a>"; }
-                ?>
+                <!-- number_format to format 2 decimal places -->
+                <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>"; 
+                // Prevents the ability to proceed to checkout when the balance is 0.00
+                if ($grandTotal > 0) { echo "<a href='payments.php'><button name='checkout'>Check Out</button></a>"; } 
+                else { echo "<a href=''><button name='checkout'>Check Out</button></a>"; }?>
             </div>
         </footer>
     </body>
+    
 </html>
