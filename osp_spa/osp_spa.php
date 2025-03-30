@@ -177,6 +177,12 @@
     <script type="text/ng-template" id="aboutus">
         <head>
             <link rel="stylesheet" href="../css/about.css">
+            <style>
+                .profile-card-container {
+                    margin: auto;
+                    margin-top: 16vh;
+                }
+            </style>
         </head>
 
         <body>
@@ -515,56 +521,65 @@
 
         <head>
             <link rel="stylesheet" href="../css/forms.css">
+            <style>
+                .container-fix {
+                    margin: auto;
+                    width: 450px;
+                }
+            </style>
         </head>
 
         <body>
-            <form action="signup.php" method="POST" id="user-form">
-                <legend>Sign Up</legend>
-                
-                <div class="form-container">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required>
-                    <p class="warning" id="username_msg"></p>
-                </div>
-                <div class="form-container">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required>
-                    <p class="warning" id="username_msg"></p>
-                </div>
-                <div class="form-container">
-                    <label for="">Email</label>
-                    <input type="text" id="email" name="email" required>
-                    <p class="warning" id="email_msg"></p>
-                </div>
-                <div class="form-container">
-                    <label for="">Phone Number</label>
-                    <input type="text" id="phone_number" name="phone_number">
-                    <p class="warning" id="phone_msg"></p>
-                </div>
-                <div class="form-container">
-                    <label for="">Password</label>
-                    <input type="password" id="password" name="password" required>
-                    <p class="warning" id="password_msg"></p>
-                </div>
-                <div class="form-container">
-                    <label for="">Confirm Password</label>
-                    <input type="password" id="confirm_password" name="confirm_password" required>
-                    <p class="warning" id="confirmpass_msg"></p>
-                </div>
-                <div class="form-container">
-                    <label for="account_type">Account Type</label>
-                    <select name="account_type" id="account_type">
-                        <option value="1">User</option>
-                        <option value="0">Administrator</option>
-                    </select>
-                </div>
-                <div class="form-container"> 
-                    <p style="display: inline;">Already have an account?</p>
-                    <a href="signin.php">Sign in here</a>
-                </div>
+            <div class="container-fix">
+                <form action="signup.php" method="POST" id="user-form">
+                    <legend>Sign Up</legend>
+                    
+                    <div class="form-container">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+                        <p class="warning" id="username_msg"></p>
+                    </div>
+                    <div class="form-container">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                        <p class="warning" id="username_msg"></p>
+                    </div>
+                    <div class="form-container">
+                        <label for="">Email</label>
+                        <input type="text" id="email" name="email" required>
+                        <p class="warning" id="email_msg"></p>
+                    </div>
+                    <div class="form-container">
+                        <label for="">Phone Number</label>
+                        <input type="text" id="phone_number" name="phone_number">
+                        <p class="warning" id="phone_msg"></p>
+                    </div>
+                    <div class="form-container">
+                        <label for="">Password</label>
+                        <input type="password" id="password" name="password" required>
+                        <p class="warning" id="password_msg"></p>
+                    </div>
+                    <div class="form-container">
+                        <label for="">Confirm Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+                        <p class="warning" id="confirmpass_msg"></p>
+                    </div>
+                    <div class="form-container">
+                        <label for="account_type">Account Type</label>
+                        <select name="account_type" id="account_type">
+                            <option value="1">User</option>
+                            <option value="0">Administrator</option>
+                        </select>
+                    </div>
+                    <div class="form-container"> 
+                        <p style="display: inline;">Already have an account?</p>
+                        <a href="signin.php">Sign in here</a>
+                    </div>
 
-                <button type="submit" class="enable">Sign Up</button>
-            </form>
+                    <button type="submit" class="enable">Sign Up</button>
+                </form>
+            </div>
+            
 
 
             <script>
@@ -648,28 +663,37 @@
 
         <head>
             <link rel="stylesheet" href="../css/forms.css">
+            <style>
+                .container-fix {
+                    margin: auto;
+                    margin-top: 16vh;
+                    width: 380px;
+                }
+            </style> 
         </head>
 
         <body>
-            <form action="signin.php" method="POST" id="user-form">
-                <legend>Sign In</legend>
+            <div class="container-fix">
+                <form action="signin.php" method="POST" id="user-form">
+                    <legend>Sign In</legend>
 
-                <div class="form-container">
-                    <label for="">Username</label>
-                    <input type="text" name="username" required>
-                </div>
-                <div class="form-container">
-                    <label for="">Password</label>
-                    <input type="password" name="password" required>
-                </div>  
-                <div class="form-container"> 
-                    <p style="display: inline;">Don't have an account?</p>
-                    <a href="signup.php">Sign up here</a>
-                </div>
+                    <div class="form-container">
+                        <label for="">Username</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="form-container">
+                        <label for="">Password</label>
+                        <input type="password" name="password" required>
+                    </div>  
+                    <div class="form-container"> 
+                        <p style="display: inline;">Don't have an account?</p>
+                        <a href="#!signup">Sign up here</a>
+                    </div>
 
-                <button type="submit" class="enable">Sign In</button>
-                <p style="font-size: 12px; color: red; text-align: center;"><?php echo $error_message; ?></p>
-            </form>
+                    <button type="submit" class="enable">Sign In</button>
+                    <p style="font-size: 12px; color: red; text-align: center;"><?php echo $error_message; ?></p>
+                </form>
+            </div>
         </body>
     </script>
 
