@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Web Service Platform</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"> </script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -175,7 +176,6 @@
     <!-- ABOUT US -->
     <script type="text/ng-template" id="aboutus">
         <head>
-            <title>Online Web Service Platform</title>
             <link rel="stylesheet" href="../css/about.css">
         </head>
 
@@ -262,7 +262,6 @@
         ?>
     
         <head>
-            <title>Online Web Service Platform</title>
             <link rel="stylesheet" href="../css/reviews.css">
         </head>
 
@@ -394,10 +393,13 @@
 
 
 
+
+
+
+
     <!-- TYPES OF SERVICES -->
     <script type="text/ng-template" id="services">
         <head>
-            <title>Online Web Service Platform</title>
             <style>
                 .services-page .container {
                     width: 90%;
@@ -475,6 +477,442 @@
 
 
 
+
+
+
+
+
+    
+
+
+
+
+    <!-- SIGN UP -->
+    <script type="text/ng-template" id="signup">
+        <?php
+            // Handle form submission accordingly
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+                $name = $_POST['name'];
+                $email = $_POST['email'];
+                $tel_no = $_POST['phone_number'];
+                $login_id = $_POST['username'];
+                $password = $_POST['password'];
+                $user_role = isset($_POST['account_type']) ? (int) $_POST['account_type'] : 1;  // 0 = Admin, 1 = User, Default = 1
+
+                $validateUser = validateUser($login_id,$password);
+
+                if ($validateUser === true) { 
+                    echo '<p style="color: red; text-align: center;">You already have an account. Please <a href="signin.php">sign in</a>.</p>';
+                }
+                else if ($validateUser === false) {
+                    insertUser($name, $email, $tel_no, $login_id, $password, $user_role);
+                    header("Location: signin.php"); // redirects to sign up page
+                    exit();
+                }
+            }
+        ?>
+
+        <head>
+            <link rel="stylesheet" href="../css/forms.css">
+        </head>
+
+        <body>
+            <form action="signup.php" method="POST" id="user-form">
+                <legend>Sign Up</legend>
+                
+                <div class="form-container">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                    <p class="warning" id="username_msg"></p>
+                </div>
+                <div class="form-container">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                    <p class="warning" id="username_msg"></p>
+                </div>
+                <div class="form-container">
+                    <label for="">Email</label>
+                    <input type="text" id="email" name="email" required>
+                    <p class="warning" id="email_msg"></p>
+                </div>
+                <div class="form-container">
+                    <label for="">Phone Number</label>
+                    <input type="text" id="phone_number" name="phone_number">
+                    <p class="warning" id="phone_msg"></p>
+                </div>
+                <div class="form-container">
+                    <label for="">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <p class="warning" id="password_msg"></p>
+                </div>
+                <div class="form-container">
+                    <label for="">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                    <p class="warning" id="confirmpass_msg"></p>
+                </div>
+                <div class="form-container">
+                    <label for="account_type">Account Type</label>
+                    <select name="account_type" id="account_type">
+                        <option value="1">User</option>
+                        <option value="0">Administrator</option>
+                    </select>
+                </div>
+                <div class="form-container"> 
+                    <p style="display: inline;">Already have an account?</p>
+                    <a href="signin.php">Sign in here</a>
+                </div>
+
+                <button type="submit" class="enable">Sign Up</button>
+            </form>
+
+
+            <script>
+                document.getElementById("name").addEventListener("input", chk_user);
+                document.getElementById("name").addEventListener("blur", chk_user);
+                document.getElementById("email").addEventListener("blur", chk_email);
+                document.getElementById("phone_number").addEventListener("blur", chk_phone);
+                document.getElementById("password").addEventListener("input", chk_pass);
+                document.getElementById("confirm_password").addEventListener("input", match_pass);
+            </script>
+        </body>
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- SIGN IN -->
+    <script type="text/ng-template" id="signin">
+        <?php
+            // If the user is already logged in, redirect them to the appropriate page
+            if (isset($_SESSION['user_id'])) {
+                $user_role = $_SESSION['account_type'];
+                if ($user_role == 0) {  // Admin
+                    header("Location: admin.php");
+                    exit();
+                } else if ($user_role == 1) {  // User
+                    header("Location: index.php");
+                    exit();
+                }
+            }
+
+            $error_message = '';
+
+            // Handle form submission accordingly
+            if (isset($_POST['username']) && !empty($_POST['username']) && 
+                isset($_POST['password']) && !empty($_POST['password'])) {
+
+                $login_id = $_POST['username'];
+                $password = $_POST['password'];
+
+                $validateUser = validateUser($login_id,$password);
+
+                if (!$validateUser) { $error_message = 'User not found.'; }
+                else if($validateUser === -1) { $error_message = 'Invalid login credentials.'; }
+                else {
+                    $sql = "SELECT user_id, account_type, name FROM Users WHERE login_id = ?"; 
+                    $result = $GLOBALS['conn']->prepare($sql);
+                    $result->bind_param("s", $login_id);
+                    $result->execute();
+                    $result->store_result();
+                    $result->bind_result($user_id, $account_type, $name);
+                    $result->fetch();
+
+                    $_SESSION['user_id'] = $user_id;
+                    $_SESSION['name'] = $name;
+                    $_SESSION['account_type'] = $account_type;
+                    session_write_close();
+                    ob_end_flush();
+
+                    if ($account_type == 0) {
+                        header("Location: admin.php");
+                    } else {
+                        header("Location: index.php");
+                    }
+                    exit();
+                }
+            }
+        ?>
+
+        <head>
+            <link rel="stylesheet" href="../css/forms.css">
+        </head>
+
+        <body>
+            <form action="signin.php" method="POST" id="user-form">
+                <legend>Sign In</legend>
+
+                <div class="form-container">
+                    <label for="">Username</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="form-container">
+                    <label for="">Password</label>
+                    <input type="password" name="password" required>
+                </div>  
+                <div class="form-container"> 
+                    <p style="display: inline;">Don't have an account?</p>
+                    <a href="signup.php">Sign up here</a>
+                </div>
+
+                <button type="submit" class="enable">Sign In</button>
+                <p style="font-size: 12px; color: red; text-align: center;"><?php echo $error_message; ?></p>
+            </form>
+        </body>
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- CART -->
+    <script type="text/ng-template" id="cart">
+        <head>
+            <link rel="stylesheet" href="../css/cart-style.css">
+        </head>
+        <div class="container">
+            <a href="index.php">Back</a>
+            <h1>Your Shopping Cart</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody class="cart-container">
+                    <?php $grandTotal = 0.00; $grandQty = 0; ?>
+                    
+                    <!-- If user is logged in, display cart -->
+                    <?php if (isset($_SESSION['account_type'])) { ?>
+                        <!-- display user's shopping cart items -->
+                        <?php
+                            // retrieve a user's entries from the Shopping Cart Table
+                            $sql = "SELECT * FROM ShoppingCart WHERE user_id = $userID";
+                            $result = $conn->query($sql);
+
+                            if ($result->num_rows > 0) {
+                                while ($cartRow = $result->fetch_assoc()) {
+                                    // for the curr fetched item from the Cart table,
+                                    
+                                    // add its total price to the order total,
+                                    $grandTotal = $grandTotal+$cartRow['price'];
+                                    // increment item count of order,
+                                    $grandQty = $grandQty+$cartRow['quantity'];
+
+                                    // and use its item_id to retrieve its item name from the Item table
+                                    $sql = "SELECT * FROM Item WHERE item_id = " . $cartRow['item_id'];
+                                    $result2 = $conn->query($sql); 
+                                    $itemRow = $result2->fetch_assoc();
+                                    
+                                    echo "
+                                        <tr>
+                                            <td class='child-left'>
+                                                <img src='../img/{$itemRow['image_url']}' alt=''>
+                                                <div id='itemInfo'>
+                                                    <h3>" . htmlspecialchars($itemRow['item_name']) . "</h3>
+                                                    <p>Item details</p>
+                                                </div>
+                                            </td>
+                                            <td id='price'> $" . htmlspecialchars($itemRow['price']) . "</td>
+                                            <td id='amountSelector'>
+                                                <form action='cart.php' method='POST'>
+                                                    <input type='text' name='updateItemID' id='updateItemID' value='" . $cartRow['item_id'] . "' style='display:none;'>
+                                                    <button type='submit' name='updateQty' value='decrease'>-</button>
+                                                    <span id='amount'>" . htmlspecialchars($cartRow['quantity']) . "</span>
+                                                    <button type='submit' name='updateQty' value='increase'>+</button>
+                                                </form>
+                                            </td>
+                                            <td> $" . htmlspecialchars($cartRow['price']) . "</td>
+                                        </tr>
+                                    ";
+                                }
+                            } else {
+                                echo "
+                                    <tr>
+                                        <td class=\"span-all\"> <p style=\"text-align: center;\"> Your Shopping Cart is Empty </p> </td>
+                                    </tr>
+                                ";
+                            }
+                        ?>
+                    
+                    <?php } else { ?>
+                    <!-- If not logged in, display message -->
+                    <tr>
+                        <td class="span-all"> 
+                            <p style="text-align: center;"> You are currently not signed in. <a href="signin.php">Sign in</a> to view your Shopping Cart </p> 
+                        </td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <footer class="overview">
+            <div id="p1">
+                <?php echo "<p>Number of items: <span id='numItems'>" . $grandQty . "</span></p>" ?>
+                <p>Discounts: $<span id="discount">0.00</span></p>
+                <?php 
+                    $tax = $grandTotal*0.13;
+                    //number_format to format 2 decimal places
+                    echo "<p>Tax: $<span id='tax'>" . number_format(round($tax,2), 2) . "</span></p>"
+                ?>
+            </div>
+            <div id="p2">
+                <!-- number_format to format 2 decimal places -->
+                <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>" ?>
+                <a href="payments.php"><button>Check Out</button></a>
+            </div>
+        </footer>
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <!-- SEARCH -->
+    <script type="text/ng-template" id="search">
+        <?php
+            // Initialize the table structure with headers
+            echo "<div class='container'>";
+            echo "<h2 class='order-title'>Order Details</h2>";
+            echo "<table class='order-table' border='1'>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date Issued</th>
+                        <th>Date Received</th>
+                        <th>Total Price</th>
+                        <th>Payment Code</th>
+                    </tr>";
+
+            // Get search query
+            $searchQuery = $_GET['query'] ?? '';
+            $queryElement = preg_split('/,/', $searchQuery);
+            // Initialize search parameters
+            $user_id = null;
+            $order_id = null;
+
+            if (isset($queryElement[0])) {
+                $user_id = (int) ($queryElement[0]);
+            }
+
+            if (isset($queryElement[1])) {
+                $order_id = (int) ($queryElement[1]);
+            }
+
+            // User must be signed in to search
+            if (isset($_SESSION['user_id'])) {
+                $session_user_id = $_SESSION['user_id'];
+                $account_type = $_SESSION['account_type'];
+
+                // Only run the query if user_id is set
+                if ($user_id !== null) {
+                    $orders_sql = "SELECT 1 FROM Orders WHERE user_id = $user_id LIMIT 1";
+                    $orders_result = $conn->query($orders_sql);
+
+                    if ($orders_result && $orders_result->num_rows > 0) {
+                        // Query to retrieve order details
+                        // User can only view their own orders
+                        if ($account_type == 1 && $user_id == $session_user_id) {
+                            $sql = "SELECT order_id, date_issued, date_received, total_price, payment_code FROM Orders WHERE user_id = $user_id AND order_id = $order_id";
+                        } elseif ($account_type == 0) {
+                            // Admin can view any order
+                            $sql = "SELECT order_id, date_issued, date_received, total_price, payment_code FROM Orders WHERE user_id = $user_id";
+                        }
+
+                        // Run query only if $sql is set
+                        if (isset($sql)) {
+                            $result = $conn->query($sql);
+                            if ($result && $result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr>
+                                            <td>" . htmlspecialchars($row["order_id"]) . "</td>
+                                            <td>" . htmlspecialchars($row["date_issued"]) . "</td>
+                                            <td>" . htmlspecialchars($row["date_received"]) . "</td>
+                                            <td>$" . number_format($row["total_price"], 2) . "</td>
+                                            <td>" . htmlspecialchars($row["payment_code"]) . "</td>
+                                        </tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='5'>No matching orders found.</td></tr>";
+                            }
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>No orders found for this user.</td></tr>";
+                    }
+                }
+            } else {
+                echo "<tr><td colspan='5'>You must be logged in to view orders. Please <a href='signin.php'>sign in</a>.</td></tr>";
+            }
+
+            echo "</table>";
+            echo "</div>";
+
+            $conn->close();
+        ?>
+
+    </script>
+
+
+
+
+
+
+    <!-- PAYMENTS -->
+    <script type="text/ng-template" id="payments">
+
+    </script>
+
+
+    <!-- CONFIRMATION -->
+    <script type="text/ng-template" id="confirmation">
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>    
         var app = angular.module('myApp', ['ngRoute']);
         app.config(function($routeProvider) {
@@ -503,6 +941,9 @@
             .when('/logout', {
             templateUrl : 'logout'})
 
+            .when('/search', {
+            templateUrl : 'search'})
+
             .when('/cart', {
             templateUrl : 'cart'})
 
@@ -522,7 +963,6 @@
             console.log($scope.message);
         });
         */
-
 
     </script>
 

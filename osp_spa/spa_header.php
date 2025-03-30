@@ -27,7 +27,7 @@
             </a>
         </div>
 
-        <form class="search-container" action="search.php" method="GET">
+        <form class="search-container" action="#!search" method="GET">
             <input type="text" name="query" placeholder="Search by User-Id, Order-Id">
             <button type="submit">Go</button>
         </form>
@@ -41,7 +41,7 @@
     
             <?php if (isset($_SESSION['account_type'])) { ?>
                 <!-- If the user is logged in, show the Logout button -->
-                <a href="#!logout" class="signin-btn">Logout</a>
+                <a href="../pages/logout.php" class="signin-btn">Logout</a>
             <?php } else { ?>
                 <!-- If the user is not logged in, show the Sign In button -->
                 <a href="#!signin" class="signin-btn">Sign In</a>
