@@ -2,19 +2,11 @@
 session_start();
 include("../external-php-scripts/database.php");
 
-if (!isset($_SESSION['home_address']) || !isset($_SESSION['branch_location'])) {
-    exit("Home address or branch address is missing.");
+if (isset($_SESSION['home_address']) && isset($_SESSION['branch_location'])) {
+    $home_address = $_SESSION['home_address'];
+    $branch_location = $_SESSION['branch_location'];
 }
 
-$home_address = $_SESSION['home_address'];
-$branch_location = $_SESSION['branch_location'];
-
-// Insert into Trips table
-$sql = "INSERT INTO Trips (source_code, dest_code) 
-       VALUES ('$branch_location', '$home_address')";
-
-$result = $conn->query($sql);
-$conn->close();
 ?>
 
 
@@ -43,6 +35,7 @@ $conn->close();
             zoom: 12,
             center: { lat: 43.7, lng: -79.4 } // Default center (Toronto area)
         });
+        
 
         var directionsService = new google.maps.DirectionsService();
         var directionsRenderer = new google.maps.DirectionsRenderer({map: map});

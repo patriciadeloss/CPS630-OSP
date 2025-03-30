@@ -46,25 +46,48 @@
         try {
             if ($payment_info === "Cash Payment") {
                 // Insert without salt
-                $sql = "INSERT INTO Orders (date_issued, date_received, total_price, user_id, receipt_id, payment_info, payment_salt) 
-                        VALUES (?, ?, ?, ?, ?, ?, NULL)";
+                $order_sql = "INSERT INTO Orders (date_issued, date_received, total_price, user_id, receipt_id, payment_info, payment_salt) VALUES (?, ?, ?, ?, ?, ?, NULL)";
         
-                $stmt = $GLOBALS['conn']->prepare($sql);
-                $stmt->bind_param("ssdiis", $date_issued, $date_received, $grand_total, $user_id, $receipt_id, $payment_info);
+                $order_result = $GLOBALS['conn']->prepare($order_sql);
+                $order_result->bind_param("ssdiis", $date_issued, $date_received, $grand_total, $user_id, $receipt_id, $payment_info);
             } else {
                 // Insert with salt
                 $card_salt = generateRandomSalt();
                 $hashed_payment_info = md5($payment_info . $card_salt);
         
-                $sql = "INSERT INTO Orders (date_issued, date_received, total_price, user_id, receipt_id, payment_info, payment_salt) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?)";
+                $order_sql = "INSERT INTO Orders (date_issued, date_received, total_price, user_id, receipt_id, payment_info, payment_salt) VALUES (?, ?, ?, ?, ?, ?, ?)";
         
-                $stmt = $GLOBALS['conn']->prepare($sql);
-                $stmt->bind_param("ssdiiss", $date_issued, $date_received, $grand_total, $user_id, $receipt_id, $hashed_payment_info, $card_salt);
+                $order_result = $GLOBALS['conn']->prepare($order_sql);
+                $order_result->bind_param("ssdiiss", $date_issued, $date_received, $grand_total, $user_id, $receipt_id, $hashed_payment_info, $card_salt);
             }
     
-            $stmt->execute();
-            $order_id = $GLOBALS['conn']->insert_id;
+            $order_result->execute();
+            $order_id = $GLOBALS['conn']->insert_id; //Get the inserted order_id
+
+            //Select an available truck for delivery
+            $truck_sql = "SELECT truck_id FROM Truck WHERE avail_code = 'Available' LIMIT 1";
+            $truck_result = $GLOBALS['conn']->query($truck_sql);
+            $truck_row = $truck_result->fetch_assoc();
+            $truck_id = $truck_row['truck_id'];
+
+            // Get the addresses from the session
+            if (isset($_SESSION['home_address']) && isset($_SESSION['branch_location'])) {
+                $home_address = $_SESSION['home_address'];
+                $branch_location = $_SESSION['branch_location'];
+            }
+        
+            // Create an entry for the Trips table
+            $trip_sql = "INSERT INTO Trips (source_code, dest_code, truck_id, price) VALUES (?, ?, ?, ?)";
+            $trip_result = $GLOBALS['conn']->prepare($trip_sql);
+            $trip_result->bind_param("ssid", $home_address, $branch_location, $truck_id, $grand_total);
+            $trip_result->execute();
+            $trip_id = $GLOBALS['conn']->insert_id;  //Get the inserted trip_id
+
+            // Update the Orders table with the trip_id
+            $update_sql = "UPDATE Orders SET trip_id = ? WHERE order_id = ?";
+            $update_result = $GLOBALS['conn']->prepare($update_sql);
+            $update_result->bind_param("ii", $trip_id, $order_id);
+            $update_result->execute();
 
             return $order_id;  // Return the order_id
     
