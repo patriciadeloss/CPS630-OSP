@@ -495,29 +495,6 @@
 
     <!-- SIGN UP -->
     <script type="text/ng-template" id="signup">
-        <?php
-            // Handle form submission accordingly
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-                $name = $_POST['name'];
-                $email = $_POST['email'];
-                $tel_no = $_POST['phone_number'];
-                $login_id = $_POST['username'];
-                $password = $_POST['password'];
-                $user_role = isset($_POST['account_type']) ? (int) $_POST['account_type'] : 1;  // 0 = Admin, 1 = User, Default = 1
-
-                $validateUser = validateUser($login_id,$password);
-
-                if ($validateUser === true) { 
-                    echo '<p style="color: red; text-align: center;">You already have an account. Please <a href="signin.php">sign in</a>.</p>';
-                }
-                else if ($validateUser === false) {
-                    insertUser($name, $email, $tel_no, $login_id, $password, $user_role);
-                    header("Location: signin.php"); // redirects to sign up page
-                    exit();
-                }
-            }
-        ?>
 
         <head>
             <link rel="stylesheet" href="../css/forms.css">
@@ -531,7 +508,7 @@
 
         <body>
             <div class="container-fix">
-                <form action="signup.php" method="POST" id="user-form">
+                <form action="../spa-scripts/signup.php" method="POST" id="user-form" target="signup-message">
                     <legend>Sign Up</legend>
                     
                     <div class="form-container">
@@ -571,13 +548,17 @@
                             <option value="0">Administrator</option>
                         </select>
                     </div>
+                    <div class="form-container">
+                        <iframe src="../spa-scripts/signup.php" frameborder="0" name="signup-message" style="height: 20px; width: 100%;" scrolling="no"></iframe>
+                    </div>
                     <div class="form-container"> 
                         <p style="display: inline;">Already have an account?</p>
-                        <a href="signin.php">Sign in here</a>
+                        <a href="#!signin">Sign in here</a>
                     </div>
 
                     <button type="submit" class="enable">Sign Up</button>
                 </form>
+                
             </div>
             
 
@@ -674,7 +655,7 @@
 
         <body>
             <div class="container-fix">
-                <form action="signin.php" method="POST" id="user-form">
+                <form action="#!signin" method="POST" id="user-form">
                     <legend>Sign In</legend>
 
                     <div class="form-container">
