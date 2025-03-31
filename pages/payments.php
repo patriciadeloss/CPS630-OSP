@@ -49,105 +49,114 @@
         </header>
 
 
-    <?php //only allow payment access if valid session and order number
+    <?php 
+    //only allow payment access if valid session and order number
     if (isset($_SESSION['account_type'])) {
-        $userID = $_SESSION['user_id']; ?>
-        <div class="subheader">
-            <a href="cart.php">Return to Shopping Cart</a>
-            <h1>Payments</h1> <hr>
-        </div>
-        
-        <div class="container2">
+        //ensure that the addresses are set before proceeding
+        if (empty($_SESSION['home_address']) || empty($_SESSION['branch_location'])) { ?>
+            <div class="error">
+                <h3>Home and Branch Address Not Selected </h3>
+                <p>Please enter your home address and select a branch location before proceeding to payment. Return to <a href="index.php">Home</a>.</p>
+            </div>
+        <?php } else { 
+            $userID = $_SESSION['user_id']; ?>
+            <div class="subheader">
+                <a href="cart.php">Return to Shopping Cart</a>
+                <h1>Payments</h1> <hr>
+            </div>
             
-            <div class="summary-container">
-                <h3>Order Summary:</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Quantity</th>
-                            <th>Item</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php 
-                        $subtotal = 0.00;
-                        $grandTotal = 0.00;
-                        $grandQty = 0;
-                        $tax = 0.00;
-                        //Referenced from shopping cart
-                        //orderid is currently fixed
-                        $sql = "SELECT * FROM ShoppingCart WHERE user_id = $userID";
-                        $res = $conn->query($sql);
+            <div class="container2">
+                
+                <div class="summary-container">
+                    <h3>Order Summary:</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Quantity</th>
+                                <th>Item</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php 
+                            $subtotal = 0.00;
+                            $grandTotal = 0.00;
+                            $grandQty = 0;
+                            $tax = 0.00;
+                            //Referenced from shopping cart
+                            //orderid is currently fixed
+                            $sql = "SELECT * FROM ShoppingCart WHERE user_id = $userID";
+                            $res = $conn->query($sql);
 
-                        if ($res->num_rows > 0) {
-                            while($cartRow = $res->fetch_assoc()) {
-                                //add price to subtotal
-                                $subtotal += $cartRow['price'];
-                                //increment total item count
-                                $grandQty += $cartRow['quantity'];
+                            if ($res->num_rows > 0) {
+                                while($cartRow = $res->fetch_assoc()) {
+                                    //add price to subtotal
+                                    $subtotal += $cartRow['price'];
+                                    //increment total item count
+                                    $grandQty += $cartRow['quantity'];
 
-                                //retreive item details from item table
-                                $sql = "SELECT * FROM Item WHERE item_id = " . $cartRow['item_id'];
-                                $res2 = $conn->query($sql);
-                                $itemRow = $res2->fetch_assoc();
-                                
-                                //htmlspecialchars to interpret as chars, not html code
-                                echo "
-                                    <tr>
-                                        <td>" . htmlspecialchars($cartRow['quantity']) . " x </td>
-                                        <td>" . htmlspecialchars($itemRow['item_name']) . "</td>
-                                        <td>" . htmlspecialchars($cartRow['price']) . "</td>
-                                    </tr>
-                                ";
-                                
+                                    //retreive item details from item table
+                                    $sql = "SELECT * FROM Item WHERE item_id = " . $cartRow['item_id'];
+                                    $res2 = $conn->query($sql);
+                                    $itemRow = $res2->fetch_assoc();
+                                    
+                                    //htmlspecialchars to interpret as chars, not html code
+                                    echo "
+                                        <tr>
+                                            <td>" . htmlspecialchars($cartRow['quantity']) . " x </td>
+                                            <td>" . htmlspecialchars($itemRow['item_name']) . "</td>
+                                            <td>" . htmlspecialchars($cartRow['price']) . "</td>
+                                        </tr>
+                                    ";
+                                    
+                                }
                             }
-                        }
-                    ?>
-                    </tbody>
-                </table>
-                <div class="overview">
-                    <?php 
-                        $tax = $subtotal*0.13; 
-                        $grandTotal = $subtotal + $tax;
-                    ?>
-                    <div id="p1">
-                        <p>Number of Items: <?php echo $grandQty ?></p>
-                        <p>Discount: $0.00</p>
-                        <p>Tax: $<?php echo number_format(round($tax, 2),2); ?></p>
-                    </div>
-                    <div id="p2">
-                        <div id="totals">
-                            <p>Subtotal: $<?php echo number_format(round($subtotal, 2),2); ?></p>
-                            <h3>Grand Total: $<?php echo number_format(round($grandTotal, 2),2);?></h3>
+                        ?>
+                        </tbody>
+                    </table>
+                    <div class="overview">
+                        <?php 
+                            $tax = $subtotal*0.13; 
+                            $grandTotal = $subtotal + $tax;
+                        ?>
+                        <div id="p1">
+                            <p>Number of Items: <?php echo $grandQty ?></p>
+                            <p>Discount: $0.00</p>
+                            <p>Tax: $<?php echo number_format(round($tax, 2),2); ?></p>
+                        </div>
+                        <div id="p2">
+                            <div id="totals">
+                                <p>Subtotal: $<?php echo number_format(round($subtotal, 2),2); ?></p>
+                                <h3>Grand Total: $<?php echo number_format(round($grandTotal, 2),2);?></h3>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        
-            <div class="payments-container">
-                <h3>Payment Details:</h3>
-                <form action="confirmation.php" method="POST">
-                    <input type="text" value="<?php echo $grandTotal; ?>" name="grandTotal" style="display: none;" readonly>
+            
+                <div class="payments-container">
+                    <h3>Payment Details:</h3>
+                    <form action="confirmation.php" method="POST">
+                        <input type="text" value="<?php echo $grandTotal; ?>" name="grandTotal" style="display: none;" readonly>
 
-                    <label for="payment_method">Select Payment Method:</label>
-                    <select id="payment_method" name="payment_method" required>
-                        <option value="" selected disabled>Select payment method</option>
-                        <option value="card">Credit/Debit Card</option>
-                        <option value="cash">Cash</option>
-                        <option value="giftCard">Gift Card</option>
-                    </select>
-                    <div id="payment_details"></div>
-
-                    <button>Pay Now</button>
-                </form>
+                        <label for="payment_method">Select Payment Method:</label>
+                        <select id="payment_method" name="payment_method" required>
+                            <option value="" selected disabled>Select payment method</option>
+                            <option value="card">Credit/Debit Card</option>
+                            <option value="cash">Cash</option>
+                            <option value="giftCard">Gift Card</option>
+                        </select>
+                        <div id="payment_details"></div>
+                        
+                        <button>Pay Now</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    <?php } else { 
+        <?php }
+    } else {
         //Else, return page not found error
         ?>
         <div class="error">
-            <h1 >404 - Page Not Found </h1>
+            <h1>404 - Page Not Found </h1>
             <p>Looks like that page doesn't exist. Return to <a href="index.php">Home</a>?</p>
         </div>
     <?php }?>
