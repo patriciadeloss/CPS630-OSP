@@ -226,7 +226,7 @@
             
                     // Check if user is signed in
                     if (!isset($_SESSION['user_id'])) {
-                        $error_message = 'You are currently not signed in. <a href="signin.php">Sign in</a> to add a review.';
+                        $error_message = 'You are currently not signed in. <a href="#!signin">Sign in</a> to add a review.';
                     }
                     // Check if a signed in user submitted a non-empty form
                     else {
@@ -664,7 +664,7 @@
             <link rel="stylesheet" href="../css/cart-style.css">
         </head>
         <div class="container">
-            <a href="index.php">Back</a>
+            <a href="#!home">Back</a>
             <h1>Your Shopping Cart</h1>
             <table>
                 <thead>
@@ -735,7 +735,7 @@
                     <!-- If not logged in, display message -->
                     <tr>
                         <td class="span-all"> 
-                            <p style="text-align: center;"> You are currently not signed in. <a href="signin.php">Sign in</a> to view your Shopping Cart </p> 
+                            <p style="text-align: center;"> You are currently not signed in. <a href="#!signin">Sign in</a> to view your Shopping Cart </p> 
                         </td>
                     </tr>
                 <?php } ?>
@@ -755,7 +755,7 @@
             <div id="p2">
                 <!-- number_format to format 2 decimal places -->
                 <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>" ?>
-                <a href="payments.php"><button>Check Out</button></a>
+                <a href="../pages/payments.php"><button>Check Out</button></a>
             </div>
         </footer>
     </script>
@@ -844,7 +844,7 @@
                     }
                 }
             } else {
-                echo "<tr><td colspan='5'>You must be logged in to view orders. Please <a href='signin.php'>sign in</a>.</td></tr>";
+                echo "<tr><td colspan='5'>You must be logged in to view orders. Please <a href='#!signin'>sign in</a>.</td></tr>";
             }
 
             echo "</table>";
