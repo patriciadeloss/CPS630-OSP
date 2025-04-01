@@ -4,7 +4,7 @@ include("../external-php-scripts/database.php");
 echo '<link rel="stylesheet" type="text/css" href="../css/base-style.css">';
 include("header.php");
 
-$tables = ["Item", "Users", "Truck", "Trips", "Shopping", "Orders", "ShoppingCart"];
+$tables = ["Item", "Users", "Truck", "Trips", "Shopping", "Orders", "ShoppingCart", "Reviews"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $table = $_POST['table'];
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Remove whitespaces from each value and reassign variables
     $fields_array = array_map('trim', $fields_array);
     $values_array = array_map('trim', $values_array);
-    
+
     // Add quotes to values if they are strings
     $values_quoted = [];
     foreach ($values_array as $value) {
@@ -35,32 +35,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fields_str = implode(',', $fields_array);        // Join fields into a string
     $values_quoted_str = implode(',', $values_quoted);  // Join values into a string
 
-    // Assuming the first field in the array is the primary key
-    $primary_key = $fields_array[0];
-    $primary_key_value = $values_quoted[0];
+    try {
+        // SQL query to Insert
+        $sql = "INSERT INTO $table ($fields_str) VALUES ($values_quoted_str)";
 
-    // Check if the entry with the primary key already exists
-    $check_query = "SELECT COUNT(*) as count FROM $table WHERE $primary_key = $primary_key_value";
-    $check_result = $conn->query($check_query);
-
-    if ($check_result) {
-        $row = $check_result->fetch_assoc();
-        if ($row['count'] > 0) {
-            echo "<p style='text-align: center; color: red;'>Error: A record with this $primary_key already exists in the database.</p>";
-            exit;
-        }
+        // Execute the query and display messages accordingly
+        if ($conn->query($sql) === TRUE) {
+            echo '<p style="text-align: center; color: green;">Record inserted successfully.</p>';
+        } 
+    } catch (Exception $e) {
+        echo '<p style="text-align: center; color: red;">' . $e->getMessage() . '</p>';
     }
-
-    // SQL query to Insert
-    $sql = "INSERT INTO $table ($fields_str) VALUES ($values_quoted_str)";
-
-    // Execute the query and display messages accordingly
-    if ($conn->query($sql) === TRUE) {
-        echo '<p style="text-align: center;">Record inserted successfully.</p>';
-    } else {
-        echo "<p style='text-align: center; color: red;'>Error inserting record.</p>";
-    }
-
     $conn->close();
 }
 ?>
