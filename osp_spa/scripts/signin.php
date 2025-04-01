@@ -7,7 +7,7 @@
     if (isset($_SESSION['user_id'])) {
         $user_role = $_SESSION['account_type'];
         if ($user_role == 0) {  // Admin
-            header("Location: admin.php");
+            header("Location: ../pages/admin.php");
             exit();
         } else if ($user_role == 1) {  // User
             header("Location: ../index.php");
@@ -48,7 +48,7 @@
             ob_end_flush();
 
             if ($account_type == 0) {
-                header("Location: admin.php");
+                header("Location: ../pages/admin.php");
             } else {
                 header("Location: ../index.php");
             }

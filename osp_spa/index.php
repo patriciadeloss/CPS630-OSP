@@ -328,7 +328,7 @@
                         } 
                         ?>
 
-                        <input type="submit" style="display: none;">
+                        <button type="submit" class="enable">Submit</button>
                     </form>
                 </article>
 
