@@ -20,17 +20,6 @@
         include("../external-php-scripts/security.php"); 
         include("../external-php-scripts/updateCart.php");
     ?>
-
-    <!--
-    <header>
-        <nav>
-            <a href="#!home">Home</a>
-            <a href="#!services">Types of Service</a>
-            <a href="#!reviews">Reviews</a>
-            <a href="#!aboutus">About Us</a>
-        </nav>
-    </header>
-    -->
     
 
     <!-- Render view -->
@@ -42,42 +31,16 @@
 
     <!-- HOME -->
     <script type="text/ng-template" id="home">
-        <!--
-        <h1>why you no work :((</h1>
-        <h1>{{message}}</h1>
-        {{message}}
-        {message}
-        message
-        <h1>Test</h1>
-        -->
-        
-
-        <?php 
-            // Check if the form is submitted
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                if (isset($_POST['home_address']) && isset($_POST['branch_location'])) {
-                    $home_address = $_POST['home_address']; // retrieve from input form
-                    $branch_arr = $_POST['branch_location']; // retrieve branch info
-                    $branch_info = explode("//", $branch_arr); //explode string to revert back to array
-                    $branch_code = $branch_info[0]; //retrieve store code
-                    $branch_location = $branch_info[1]; // retrieve branch address
-                    $_SESSION['home_address'] = $home_address; // Store in session
-                    $_SESSION['branch_location'] = $branch_location; // Store branch location in session
-                    $_SESSION['branch_code'] = $branch_code; // Store branch location in session
-
-                    if (isset($_SESSION['user_id'])) {
-                        $user_id = $_SESSION['user_id'];
-
-                        // Update the database with the new address
-                        $sql = "UPDATE Users SET address = '$home_address' WHERE user_id = $user_id";
-                        $result = $conn->query($sql);
-                    }
-                }
-            }
-        ?>
             
         <head>
             <link rel="stylesheet" href="../css/index.css">
+            <style>
+                .map-image {    
+                    margin: auto;
+                    width: 45px;
+                    height: auto;
+                }
+            </style>
         </head>
 
         <body>
@@ -117,7 +80,7 @@
                                         }
                                         
                                         //Array() does not get posted properly 
-                                        //implode array to string to post its value through the form
+                                        //implode *array to string* to post its value through the form
                                         $imp_branch = implode('//' , $branch);
                                         echo "<option value=\"$imp_branch\" $selected>$branch[1]</option>";
                                     }
@@ -126,30 +89,42 @@
 
                         <!-- This button submits both the home address and branch location in the form-->
                         <button class="save-btn" type="submit">Save Address</button>
+                        
                     </form>
+                        <a href="#!map" class="map-btn">
+                            <img src="../img/map.png" alt="Map Image" class="map-image">
+                        </a>
                 </div>
-                <!-- Added a temporary link here to test the map functionality -->
-                <a href="map.php" class="map-btn">View Map</a>
-            <?php   } ?>
+            <?php } ?>
 
             <?php
             // Fetch items from the database
             try {
-                $sql = "SELECT item_id, item_name, price, made_in, department_code, image_url FROM Item";
+                $sql = "SELECT item_id, item_name, price, sales_price, percent_off, made_in, department_code, image_url FROM Item";
                 $result = $conn->query($sql);
             
                 if ($result->num_rows > 0) {
                     echo '<div class="product-grid">';
             
                     while ($row = $result->fetch_assoc()) {
-                        echo '<div class="card" draggable="true" ondragstart="drag(event)" id="' . htmlspecialchars($row["item_id"]) . '">'
-                            . '<img src="../img/' . htmlspecialchars($row["image_url"]) . '" alt="Product Image" ' . 'draggable="true" ondragstart="drag(event)" id="' . htmlspecialchars($row["item_id"]) . '">'
-                                . '<h3>' . htmlspecialchars($row["item_name"]) . '</h3>'
-                                . '<p class="price">$' . number_format($row["price"], 2) . '</p>'
-                                . '<p class="details">Made in: ' . htmlspecialchars($row["made_in"]) . '</p>'
-                                . '<p class="details">Dept code: ' . htmlspecialchars($row["department_code"]) . '</p>'
-                            . '</div>';
+                        if (isset($row["sales_price"])) {
+                            $display_price = "<div style='display: flex; flew-flow: row; align-items: center; gap: 8px;'>" .
+                                                "<p class='curr-price'>$" . number_format($row["sales_price"], 2) . "</p>" . 
+                                                "<p class='percent-off'>" . intval(htmlspecialchars($row["percent_off"])*100) . "% off!</p>" .
+                                                "<p class='og-price'>$" . number_format($row["price"], 2) . "</p>" .
+                                            "</div>";
+                        } else {
+                            $display_price = '<p class="curr-price">$' . number_format($row["price"], 2) . '</p>';
+                        }
+                    
+                        echo '<div class="card" draggable="true" ondragstart="drag(event)" id="' . htmlspecialchars($row["item_id"]) . '">' .
+                                '<img src="../img/' . htmlspecialchars($row["image_url"]) . '" alt="Product Image" ' . 'draggable="true" ondragstart="drag(event)" id="' . htmlspecialchars($row["item_id"]) . '">' .
+                                '<h3>' . htmlspecialchars($row["item_name"]) . '</h3>' . 
+                                $display_price . '<p class="details">Made in: ' . htmlspecialchars($row["made_in"]) . '</p>' .
+                                '<p class="details">Dept code: ' . htmlspecialchars($row["department_code"]) . '</p>' .
+                            '</div>';
                     }
+                    
             
                     echo '</div>';
                 } else {
@@ -159,6 +134,8 @@
                 echo "Error: " . $e->getMessage();
             }        
         ?>
+
+        <iframe src="scripts/address.php" frameborder="0" name="address-frame" style="width: 100%; height: 50px;"></iframe>
 
         </body>
 
@@ -238,31 +215,33 @@
     <script type="text/ng-template" id="reviews">
         <?php 
             $error_message = '';
+            $item_to_filter = 'None';
 
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                // Check if user is signed in
-                if (!isset($_SESSION['user_id'])) {
-                    $error_message = 'You are currently not signed in. <a href="signin.php">Sign in</a> to add a review.';
-                }
-                // Check if a signed in user submitted a non-empty form
-                else if (isset($_POST['item_id']) && !empty($_POST['item_id']) && 
-                        isset($_POST['rating']) && !empty($_POST['rating']) &&
-                        isset($_POST['item_review']) && !empty($_POST['item_review'])) {
+
+                // Form data will only be processed if the Reviews form was submitted
+                if (isset($_POST['item-to-review']) && !empty($_POST['item-to-review']) && 
+                    isset($_POST['rating']) && !empty($_POST['rating']) &&
+                    isset($_POST['item_review']) && !empty($_POST['item_review'])) {
             
-                    $userID = $_SESSION['user_id'];
-                    $itemID = $_POST['item_id'];
-                    $rating = $_POST['rating'];
-                    $itemReview = $_POST['item_review'];
-            
-                    try {
-                        $sql = "INSERT INTO Reviews (user_id, item_id, rating, review_text) VALUES ($userID, $itemID, $rating, '$itemReview')";
-                        $conn->query($sql);
-                    } catch (Exception $e) {
-                        $error_message = "Error: " . $e->getMessage();
-                    }  
-                }
-                else {
-                    $error_message = 'Invalid form.';
+                    // Check if user is signed in
+                    if (!isset($_SESSION['user_id'])) {
+                        $error_message = 'You are currently not signed in. <a href="signin.php">Sign in</a> to add a review.';
+                    }
+                    // Check if a signed in user submitted a non-empty form
+                    else {
+                        $userID = $_SESSION['user_id'];
+                        $itemID = $_POST['item-to-review'];
+                        $rating = $_POST['rating'];
+                        $itemReview = $_POST['item_review'];
+                
+                        try {
+                            $sql = "INSERT INTO Reviews (user_id, item_id, rating, review_text) VALUES ($userID, $itemID, $rating, '$itemReview')";
+                            $conn->query($sql);
+                        } catch (Exception $e) {
+                            $error_message = "Error: " . $e->getMessage();
+                        }  
+                    }
                 }
             }
         ?>
@@ -274,13 +253,13 @@
         <body>
             <section>
                 <article>
-                    <!-- Reviews form -->
-                    <form action="" method="POST" id="user-form">
+                    <!-- REVIEWS FORM -->
+                    <form action="" method="POST" class="user-form">
                         <legend>Write a review</legend>
 
                         <div class="form-container">
                             <label for="item">For:</label>
-                            <select name="item_id" id="item_id">
+                            <select name="item-to-review" id="item_id">
                                 <?php
                                 // Fetch items from the database
                                 try {
@@ -302,10 +281,10 @@
                         </div>
                         <div class="form-container">
                             <label for="rating">Rating:</label>
-                            <input type="number" id="rating" name="rating" min="1" max="5" step=".1">
+                            <input type="number" id="rating" name="rating" min="1" max="5" step=".1" required>
                         </div>
                         <div class="form-container">
-                            <textarea name="item_review" id="item_review" rows="5" maxlength="60"></textarea>
+                            <textarea name="item_review" id="item_review" rows="5" maxlength="60" required></textarea>
                         </div>
 
                         <button type="submit" class="enable">Submit</button>
@@ -318,43 +297,69 @@
 
                     <br>
 
-                    <!-- Filters form -->
-                    <form action="" method="POST" id="user-form">
-                        <legend>Filter by Product</legend>
+                    <!-- FILTERS FORM -->
+                    <form action="" method="POST" class="user-form" id="filter-by-product">
+                        <?php 
+                            if (isset($_POST['item-to-filter']) && !empty($_POST['item-to-filter'])) {
+                                $item_to_filter = $_POST['item-to-filter']; 
+                            }
+                            echo "<legend>Filter by: " . $item_to_filter . "</legend>";
+                        ?>
+
+                        <input type="radio" name="item-to-filter" value="None">
+                        <label>None</label><br>
 
                         <?php
                         // Fetch items from the database
-                        try {
-                            $sql = "SELECT item_name FROM Item";
+                        try { 
+                            $sql = "SELECT item_id, item_name FROM Item";
                             $result = $conn->query($sql);
-                        
+                            
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
-                                    echo "<div class='form-container'>" .
-                                            "<input type='checkbox' id='rating' name='rating'>" .
-                                            "<label for='quantity'>" . htmlspecialchars($row["item_name"]) . "</label>" .
-                                        "</div>";
+                                    echo "<input type='radio' name='item-to-filter' value='" . htmlspecialchars($row["item_name"]) . "''>";
+                                    echo "<label> " . htmlspecialchars($row["item_name"]) . "</label><br>";
                                 }
                             } else {
-                                echo "<p>No products found.</p>";
+                                echo '<p>No products found.</p>';
                             }
                         } catch (Exception $e) {
                             echo "Error: " . $e->getMessage();
                         } 
                         ?>
+
+                        <input type="submit" style="display: none;">
                     </form>
                 </article>
 
-
+                
                 <article>
+                    <!-- Reviews display -->
                     <?php
                     try {
+                        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['item-to-filter']) && !empty($_POST['item-to-filter'])) {
+                            $item_to_filter = $_POST['item-to-filter'];
+                        }
+                        
                         // Fetch reviews from the database
-                        $sql = "SELECT user_id, item_id, rating, review_text, time_stamp FROM Reviews";
-                        $review_result = $conn->query($sql);
+                        // Depending on the filter (radio button clicked),
+                        // define & execute a query to fetch item entries
+                        if ($item_to_filter == "None") {
+                            $sql = "SELECT user_id, item_id, rating, review_text, time_stamp FROM Reviews";
+                            $review_result = $conn->query($sql);
+                        }
+                        else {
+                            $sql = "SELECT item_id FROM Item WHERE item_name = '" . $_POST['item-to-filter'] . "'";
+                            $item_result = $conn->query($sql);
+                            $item_row = $item_result->fetch_assoc();
+
+                            $sql = "SELECT user_id, item_id, rating, review_text, time_stamp FROM Reviews WHERE item_id=" . $item_row['item_id'];
+                            $review_result = $conn->query($sql);
+                        }
                     
                         if ($review_result->num_rows > 0) {
                     
+                            // For each item entry fetches/retrieved,
                             while ($review_row = $review_result->fetch_assoc()) {
                                 // Fetch username of user who made the review from the database
                                 $sql = "SELECT login_id FROM Users WHERE user_id=" . $review_row['user_id'];
@@ -388,6 +393,12 @@
                     ?>
                 </article>
             </section>
+
+            <script>
+                $("#filter-by-product input").on("click", function(event) {
+                    $("#filter-by-product").submit();   
+                });
+            </script>
         </body>
     </script>
 
@@ -508,7 +519,7 @@
 
         <body>
             <div class="container-fix">
-                <form action="../spa-scripts/signup.php" method="POST" id="user-form" target="signup-message">
+                <form action="scripts/signup.php" method="POST" id="user-form" target="signup-message">
                     <legend>Sign Up</legend>
                     
                     <div class="form-container">
@@ -549,7 +560,7 @@
                         </select>
                     </div>
                     <div class="form-container">
-                        <iframe src="../spa-scripts/signup.php" frameborder="0" name="signup-message" style="height: 20px; width: 100%;" scrolling="no"></iframe>
+                        <iframe src="scripts/signup.php" frameborder="0" name="signup-message" style="height: 20px; width: 100%;" scrolling="no"></iframe>
                     </div>
                     <div class="form-container"> 
                         <p style="display: inline;">Already have an account?</p>
@@ -591,56 +602,6 @@
 
     <!-- SIGN IN -->
     <script type="text/ng-template" id="signin">
-        <?php
-            // If the user is already logged in, redirect them to the appropriate page
-            if (isset($_SESSION['user_id'])) {
-                $user_role = $_SESSION['account_type'];
-                if ($user_role == 0) {  // Admin
-                    header("Location: admin.php");
-                    exit();
-                } else if ($user_role == 1) {  // User
-                    header("Location: index.php");
-                    exit();
-                }
-            }
-
-            $error_message = '';
-
-            // Handle form submission accordingly
-            if (isset($_POST['username']) && !empty($_POST['username']) && 
-                isset($_POST['password']) && !empty($_POST['password'])) {
-
-                $login_id = $_POST['username'];
-                $password = $_POST['password'];
-
-                $validateUser = validateUser($login_id,$password);
-
-                if (!$validateUser) { $error_message = 'User not found.'; }
-                else if($validateUser === -1) { $error_message = 'Invalid login credentials.'; }
-                else {
-                    $sql = "SELECT user_id, account_type, name FROM Users WHERE login_id = ?"; 
-                    $result = $GLOBALS['conn']->prepare($sql);
-                    $result->bind_param("s", $login_id);
-                    $result->execute();
-                    $result->store_result();
-                    $result->bind_result($user_id, $account_type, $name);
-                    $result->fetch();
-
-                    $_SESSION['user_id'] = $user_id;
-                    $_SESSION['name'] = $name;
-                    $_SESSION['account_type'] = $account_type;
-                    session_write_close();
-                    ob_end_flush();
-
-                    if ($account_type == 0) {
-                        header("Location: admin.php");
-                    } else {
-                        header("Location: index.php");
-                    }
-                    exit();
-                }
-            }
-        ?>
 
         <head>
             <link rel="stylesheet" href="../css/forms.css">
@@ -655,7 +616,7 @@
 
         <body>
             <div class="container-fix">
-                <form action="#!signin" method="POST" id="user-form">
+                <form action="scripts/signin.php" method="POST" id="user-form" target="_parent">
                     <legend>Sign In</legend>
 
                     <div class="form-container">
@@ -665,14 +626,19 @@
                     <div class="form-container">
                         <label for="">Password</label>
                         <input type="password" name="password" required>
-                    </div>  
+                    </div> 
+
+                    <div class="form-container">
+                        <iframe src="scripts/signup.php" frameborder="0" name="signup-message" style="margin:0; height: 20px; width: 100%;" scrolling="no"></iframe>
+                    </div>
+                    
                     <div class="form-container"> 
                         <p style="display: inline;">Don't have an account?</p>
                         <a href="#!signup">Sign up here</a>
                     </div>
 
                     <button type="submit" class="enable">Sign In</button>
-                    <p style="font-size: 12px; color: red; text-align: center;"><?php echo $error_message; ?></p>
+                    
                 </form>
             </div>
         </body>
@@ -894,14 +860,93 @@
 
 
 
+
+
+    <!-- MAP -->
+    <script type="text/ng-template" id="map">
+        <?php 
+            print_r($_SESSION);
+            if (isset($_SESSION['home_address']) && isset($_SESSION['branch_location'])) {
+                $home_address = $_SESSION['home_address'];
+                $branch_location = $_SESSION['branch_location'];
+            }
+        ?>
+        <head>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                }
+                #map {
+                    height: 500px;
+                    width: 100%;
+                }
+            </style>
+        </head>
+        <body>
+
+        <div id="map"></div>
+
+        <script>
+            function initMap() {
+                var map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 12,
+                    center: { lat: 43.7, lng: -79.4 } // Default center (Toronto area)
+                });
+                
+
+                var directionsService = new google.maps.DirectionsService();
+                var directionsRenderer = new google.maps.DirectionsRenderer({map: map});
+
+                // Use address names instead of coordinates
+                var request = {
+                    origin: '<?php echo $branch_location; ?>', // branch address from session
+                    destination: '<?php echo $home_address; ?>', // home address from session
+                    travelMode: google.maps.TravelMode.DRIVING
+                };
+
+                directionsService.route(request, function (result, status) {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(result);
+                    } else {
+                        alert('Directions request failed due to ' + status);
+                    }
+                });
+            }
+        </script>
+
+        <!-- Load Google Maps API -->
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrIBP9HXZrhsDUA7bCPqn9S-33AwSiR5U&callback=initMap"></script>
+
+        </body>
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- PAYMENTS -->
     <script type="text/ng-template" id="payments">
 
     </script>
 
 
+
     <!-- CONFIRMATION -->
     <script type="text/ng-template" id="confirmation">
+
+    </script>
+
+
+    <!-- DB ADMIN -->
+    <script type="text/ng-template" id="db-admin">
 
     </script>
 
@@ -951,6 +996,9 @@
 
             .when('/cart', {
             templateUrl : 'cart'})
+
+            .when('/map', {
+            templateUrl : 'map'})
 
             .when('/payments', {
             templateUrl : 'payments'})

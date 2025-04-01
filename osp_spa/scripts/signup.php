@@ -11,8 +11,8 @@
 </head>
 <body>
     <?php
-        include("../external-php-scripts/database.php");
-        include("../external-php-scripts/security.php");
+        include("../../external-php-scripts/database.php");
+        include("../../external-php-scripts/security.php");
 
         // Handle form submission accordingly
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -31,9 +31,7 @@
             }
             else if ($validateUser === false) {
                 insertUser($name, $email, $tel_no, $login_id, $password, $user_role);
-                echo '<p style="color: green; text-align: center;">You have created an account. Please <a href="../osp_spa/osp_spa.php#!/signin" target="_top">sign in</a>.</p>';
-                //echo "<script>window.top.location.href = \"../osp_spa/osp_spa.php#!/signup\";</script>";
-                //header("Location: ../osp_spa/osp_spa.php#!/signup"); // redirects to sign up page
+                echo '<p style="color: green; text-align: center;">You have created an account. Please <a href="../osp_spa/index.php#!/signin" target="_top">sign in</a>.</p>';
                 exit();
             }
         }
