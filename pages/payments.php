@@ -55,7 +55,7 @@
         //ensure that the addresses are set before proceeding
         if (empty($_SESSION['home_address']) || empty($_SESSION['branch_location'])) { ?>
             <div class="error">
-                <h3>Home and Branch Address Not Selected </h3>
+                <h2>Home and Branch Address Not Selected </h2>
                 <p>Please enter your home address and select a branch location before proceeding to payment. Return to <a href="index.php">Home</a>.</p>
             </div>
         <?php } else { 

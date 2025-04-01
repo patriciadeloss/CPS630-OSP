@@ -60,7 +60,7 @@ if ($payment_method === 'card' && $card_number) {
         <div id="thank-you">
             <img id="checkMark" src="../img/icons/check-mark.png" alt="">
             <h1>Thank you!</h1>
-            <p>Your order [id #<?php echo $order_id; ?>] has been confirmed.</p>
+            <p>Your order has been confirmed.</p>
             <p>Please review the details of your order below</p>
         </div>
     </div>
