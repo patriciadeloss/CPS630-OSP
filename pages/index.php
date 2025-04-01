@@ -83,6 +83,9 @@
 
                 <!-- This button submits both the home address and branch location in the form-->
                 <button class="save-btn" type="submit">Save Address</button>
+                <a href="map.php" class="map-btn">
+                    <img src="../img/map.png" alt="Map Image" class="map-image">
+                </a>
             </form>
         </div>
     <?php } ?>
