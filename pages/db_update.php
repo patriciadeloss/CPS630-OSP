@@ -4,45 +4,42 @@ include("../external-php-scripts/database.php");
 echo '<link rel="stylesheet" type="text/css" href="../css/base-style.css">';
 include("header.php");
 
-$tables = ["Item", "Users", "Truck", "Trips", "Shopping", "Orders", "ShoppingCart"];
+$tables = ["Item", "Users", "Truck", "Trips", "Shopping", "Orders", "ShoppingCart", "Reviews"];
 
 $message = ""; // Initialize message variable
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // All fields must have input values
-    if (!empty($_POST['table']) && !empty($_POST['field']) && !empty($_POST['new_value']) && !empty($_POST['conditions'])) {
-        $table = $_POST['table'];
-        $field = $_POST['field'];
-        $new_value = $_POST['new_value'];
-        $conditions = $_POST['conditions'];
+    try {
+        // All fields must have input values
+        if (!empty($_POST['table']) && !empty($_POST['field']) && !empty($_POST['new_value']) && !empty($_POST['conditions'])) {
+            $table = $_POST['table'];
+            $field = $_POST['field'];
+            $new_value = $_POST['new_value'];
+            $conditions = $_POST['conditions'];
 
-        // Add quotes to the new value if it's a string
-        if (!is_numeric($new_value)) {
-            $new_value = "'" . $new_value . "'";
-        }
+            // Divide the conditions input into two parts: condition_field and condition_value
+            list($condition_field, $condition_value) = explode('=', $conditions, 2);
+            // Removes white spaces in the input
+            $condition_field = trim($condition_field);
+            $condition_value = trim($condition_value);
 
-        // Divide the conditions input into two parts: condition_field and condition_value
-        list($condition_field, $condition_value) = explode('=', $conditions, 2);
-        // Removes white spaces in the input
-        $condition_field = trim($condition_field);
-        $condition_value = trim($condition_value);
+            // SQL query
+            $sql = "UPDATE $table SET $field = ? WHERE $condition_field = ?";
+            $result = $conn->prepare($sql);
+            $result->bind_param("ss", $new_value, $condition_value);
+            $result->execute();
 
-        // Add quotes to the condition value if it's a string
-        if (!is_numeric($condition_value)) {
-            $condition_value = "'" . $condition_value . "'";
-        }
-
-        // SQL query
-        $sql = "UPDATE $table SET $field = $new_value WHERE $condition_field = $condition_value";
-
-        // Execute query and print out message
-        if ($conn->query($sql) === TRUE) {
-            $message = '<p style="text-align: center; color: green;">Record updated successfully.</p>';
+            // Execute query and print out message
+            if ($result->execute()) {
+                $message = '<p style="text-align: center; color: green;">Record updated successfully.</p>';
+            } else {
+                $message = '<p style="text-align: center; color: red;">Error updating record: ' . $result->error . '</p>';
+            }
         } else {
-            $message = '<p style="text-align: center; color: red;">Error updating record: ' . $conn->error . '</p>';
+            $message = '<p style="text-align: center; color: red;">Please fill out all fields.</p>';
         }
-    } else {
-        $message = '<p style="text-align: center; color: red;">Please fill out all fields.</p>';
+    } catch (Exception $e) {
+        $message = '<p style="text-align: center; color: red;">' . $e->getMessage() . '</p>';
     }
 }
 ?>
