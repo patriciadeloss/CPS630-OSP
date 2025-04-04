@@ -16,6 +16,7 @@
     </head>
 
     <body>
+        <!-- Minimized the header to free up space for shopping cart items  -->
         <header id="top-navbar">
             <div class="logo">
                 <a href="index.php">
@@ -30,7 +31,7 @@
             </form>
 
             <div class="login">
-                <a href="cart.php" class="cart-icon" id="cartIcon">
+                <a href="#!cart" class="cart-icon" id="cartIcon">
                     <div id="cart" class="cart-dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
                         <img src="../img/shopping-cart.png" alt="Shopping Cart">
                     </div>
@@ -61,11 +62,10 @@
                 <tbody class="cart-container">
                     <?php $grandTotal = 0.00; $grandQty = 0; $totalDiscount = 0.00;?>
                     
-                    <!-- If user is logged in, display cart -->
-                    <?php if (isset($_SESSION['account_type'])) { ?>
-
-                        <!-- display user's shopping cart items -->
-                        <?php
+                    <?php 
+                    // If user of type Customer is logged in, display cart
+                    if (isset($_SESSION['account_type'])) {
+                        if($_SESSION['account_type'] == 1) {
                             // retrieve a user's entries from the Shopping Cart Table
                             $sql = "SELECT * FROM ShoppingCart WHERE user_id = $userID";
                             $result = $conn->query($sql);
@@ -106,7 +106,7 @@
                                             <td id='price'>" . $itemPrice . "</td>
                                             
                                             <td id='amountSelector'>
-                                                <form action='cart.php' method='POST'>
+                                                <form action='#!cart' method='POST'>
                                                     <input type='text' name='updateItemID' id='updateItemID' value='" . $cartRow['item_id'] . "' style='display:none;'>
                                                     <button type='submit' name='updateQty' value='decrease'>-</button>
                                                     <span id='amount'>" . htmlspecialchars($cartRow['quantity']) . "</span>
@@ -124,16 +124,25 @@
                                     </tr>
                                 ";
                             }
-                        ?>
-                    
-                    <?php } else { ?>
-                    <!-- If not logged in, display message -->
-                    <tr>
-                        <td class="span-all"> 
-                            <p style="text-align: center;"> You are currently not signed in. <a href="signin.php">Sign in</a> to view your Shopping Cart </p> 
-                        </td>
-                    </tr>
-                <?php } ?>
+                        }
+                        // If user is of type Admin, display message
+                        else {
+                            echo "<tr>" .
+                                    "<td class='span-all'>" . 
+                                    "<p style='text-align: center;'> You are signed in to an Admin account. Please <a href='signin.php'>sign in</a> as a Customer. </p>" .
+                                    "</td>"  .
+                                 "</tr>";
+                        }
+                    }
+                    // If not logged in, display message 
+                    else {
+                    echo "<tr>" .
+                            "<td class='span-all'>" . 
+                            "<p style='text-align: center;'> You are currently not signed in. <a href='signin.php'>Sign in</a> to view your Shopping Cart </p>" .
+                            "</td>"  .
+                        "</tr>";
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
@@ -149,9 +158,10 @@
             </div>
             <div id="p2">
                 <!-- number_format to format 2 decimal places -->
-                <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>"; 
+                <?php echo "<h2>Grand Total: $<span id='grandTotal'>" . number_format(round($grandTotal+$tax,2),2) . "</span></h2>";
+
                 // Prevents the ability to proceed to checkout when the balance is 0.00
-                if ($grandTotal > 0) { echo "<a href='payments.php'><button name='checkout'>Check Out</button></a>"; } 
+                if ($_SESSION['account_type'] == 1 && $grandTotal > 0) { echo "<a href='payments.php'><button name='checkout'>Check Out</button></a>"; } 
                 else { echo "<a href=''><button name='checkout'>Check Out</button></a>"; }?>
             </div>
         </footer>
