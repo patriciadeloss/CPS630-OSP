@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -54,6 +56,7 @@
     </head>
     <body>
         <?php include("header.php"); ?>
+
         <div class="services-page">
             <div class="container">
                 <h1 class="title">Our Services</h1>
