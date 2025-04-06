@@ -6,7 +6,14 @@ body {
 
 header { flex-shrink: 0; }
 
+signin {
+    display: flex;
+    justify-content: center;
+    height: 80vh;
+}
+
 #user-form {
+    width: fit-content;
     align-self: center;
     margin-top: auto;
     margin-bottom: auto;
@@ -89,4 +96,3 @@ legend {
     font-size: 0.8rem;
     padding: 0px 5px;
 }
-
