@@ -71,4 +71,4 @@ app.config(function($routeProvider) {
 });
 ```
 
-When "Services" is clicked on the header, ```<main ng-view></main>```in pages/index.php will render as ```<main ng-view><services></services></main>```. The ```<services>``` tag contains the HTML template pages/services.html with styling applied from css/services/css.
+When "Services" is clicked on the header, ```<main ng-view></main>```in pages/index.php will render as ```<main ng-view><services></services></main>```. The ```<services>``` tag contains the HTML template pages/services.html with styling applied from css/services.css.
