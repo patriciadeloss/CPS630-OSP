@@ -8,11 +8,11 @@ A snippet of how one of the components work
 app.component('services', {
     templateUrl: '../spa-pages/services.html',
     controller: function($scope) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
-    link.href = '../css/services.css';  
-    document.head.appendChild(link);
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = '../css/services.css';  
+        document.head.appendChild(link);
     }
 });
 ```
@@ -32,11 +32,11 @@ templateUrl: '../spa-pages/services.html'
 
 3. Define the functionality of the controller
 ```javascript
-controller: function() {
+controller: function($scope) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.type = 'text/css';
-    link.href = '../css/index.css';  
+    link.href = '../css/services.css';  
     document.head.appendChild(link);
 }
 ```
