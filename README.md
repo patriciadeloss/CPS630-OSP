@@ -8,16 +8,16 @@ A snippet of how one of the components work
 app.component('services', {
     templateUrl: '../spa-pages/services.html',
     controller: function($scope) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = '../css/services.css';  
-        document.head.appendChild(link);
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = '../css/services.css';  
+    document.head.appendChild(link);
     }
 });
 ```
 
-Name the component 'services'
+1. Name the component 'services'
 ```javascript
 app.component('services', {
     ...
@@ -25,7 +25,23 @@ app.component('services', {
 });
 ```
 
-Link its HTML template
-```
+2. Link its HTML template
+```javascript
 templateUrl: '../spa-pages/services.html'
 ```
+
+3. Define the functionality of the controller
+```javascript
+controller: function() {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = '../css/index.css';  
+    document.head.appendChild(link);
+}
+```
+
+Here it can be observed that the controller links the corresponding stylesheet. 
+The ```<head>``` tag in pages/index.php contains the links css/base-style.css & script/spa.js. This tag is fixed and isn't updated dynamically through AngularJS meaning it isn't re-rendered to add new styles. Hence why I had to manually add the stylesheets for each page (or component) in spa.js.
+
+For example, when a user navigates to the 'services' section, I add the corresponding stylesheet for that component via scripts/spa.js to ensure the styles are applied properly.
