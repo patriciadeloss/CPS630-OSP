@@ -55,7 +55,7 @@ controller: function($scope) {
 ```
 
 The controller links the corresponding stylesheet. 
-The ```<head>``` tag in pages/index.php contains the links css/base-style.css & script/spa.js. This tag is fixed and isn't updated dynamically through AngularJS meaning it isn't re-rendered to add new styles. Hence why I had to manually add the stylesheets for each page (or component) in spa.js.
+The ```<head>``` tag in pages/index.php contains the links to css/base-style.css & script/spa.js. This tag is fixed and isn't updated dynamically through AngularJS meaning it *isn't re-rendered* to *add new styles*. Hence why I had to manually add the stylesheets for each page (or component) in spa.js.
 
 For example, when a user navigates to the "Services" section, I add the corresponding stylesheet for that component via scripts/spa.js to ensure the styles are applied properly.
 
