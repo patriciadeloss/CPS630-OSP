@@ -16,7 +16,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-        <script src="../js/script.js"></script>
+        <script src="../js/spa.js"></script>
     </head>
 
     <body ng-app="myApp">
