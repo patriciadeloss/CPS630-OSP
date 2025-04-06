@@ -1,7 +1,7 @@
-## CPS630-OSP
+# CPS630-OSP
 Summary of functionality: there are currently a number of components and controllers but I've only gotten the Sign In form to work. The logout button partiallyyy works --- the only problem is when u click it, it only switches back to the sign in button after a manual page refresh 😭
 
-# js/spa.js
+## js/spa.js
 
 A snippet of how one of the components work
 ```
@@ -23,4 +23,9 @@ app.component('services', {
     ...
     }
 });
+```
+
+Link its HTML template
+```
+templateUrl: '../spa-pages/services.html'
 ```
