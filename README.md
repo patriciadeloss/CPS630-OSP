@@ -30,7 +30,7 @@ app.config(function($routeProvider) {
 });
 ```
 
-1. Name the component 'services'
+**1. Name the component 'services'**
 ```javascript
 app.component('services', {
     ...
@@ -38,12 +38,12 @@ app.component('services', {
 });
 ```
 
-2. Link its HTML template
+**2. Link its HTML template**
 ```javascript
 templateUrl: '../spa-pages/services.html'
 ```
 
-3. Define the functionality of the controller
+**3. Define the functionality of the controller**
 ```javascript
 controller: function($scope) {
     const link = document.createElement('link');
@@ -59,7 +59,7 @@ The ```<head>``` tag in pages/index.php contains the links css/base-style.css & 
 
 For example, when a user navigates to the 'services' section, I add the corresponding stylesheet for that component via scripts/spa.js to ensure the styles are applied properly.
 
-4. Configure the router
+**4. Configure the router**
 ```javascript
 app.config(function($routeProvider) {
   $routeProvider
