@@ -4,7 +4,7 @@ Summary of functionality: there are currently a number of components and control
 ## js/spa.js
 
 A snippet of how one of the components work
-```
+```javascript
 app.component('services', {
     templateUrl: '../spa-pages/services.html',
     controller: function($scope) {
@@ -18,7 +18,7 @@ app.component('services', {
 ```
 
 Name the component 'services'
-```
+```javascript
 app.component('services', {
     ...
     }
