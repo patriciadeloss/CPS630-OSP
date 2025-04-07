@@ -164,36 +164,14 @@
 
         <body>
             <section class="profile-card-container">
-                <article class="profile-card">
+                <article class="profile-card" ng-repeat="profile in profiles">
                     <section class="profile-card-header">
-                        <img src="../img/pfp.svg" alt="" style="width:auto; height:50%;">
+                        <img ng-src="{{profile.image}}" alt="Profile Picture" style="width:auto; height:50%;">
                     </section>
                     <section class="profile-card-body">
-                        <h2>Patricia Delos Santos</h2>
+                        <h2>{{profile.name}}</h2>
                         <hr>
-                        <p>"Blah blah blah"<br>pdelos@torontomu.ca</p>
-                    </section>
-                </article>
-                
-                <article class="profile-card">
-                    <section class="profile-card-header">
-                        <img src="../img/pfp.svg" alt="" style="width:auto; height:50%;">
-                    </section>
-                    <section class="profile-card-body">
-                        <h2>Genevive Sanchez</h2>
-                        <hr>
-                        <p>"Blah blah blah"<br>g1sanchez@torontomu.ca</p>
-                    </section>
-                </article>
-
-                <article class="profile-card">
-                    <section class="profile-card-header">
-                        <img src="../img/pfp.svg" alt="" style="width:auto; height:50%;">
-                    </section>
-                    <section class="profile-card-body">
-                        <h2>Suboohi Sayeed</h2>
-                        <hr>
-                        <p>"Blah blah blah"<br>suboohi.sayeed@torontomu.ca</p>
+                        <p>"{{profile.quote}}"<br>{{profile.email}}</p>
                     </section>
                 </article>
             </section>
@@ -467,22 +445,12 @@
             <div class="services-page">
                 <div class="container">
                     <h1 class="title">Our Services</h1>
-                    <p>Don't want to leave the house? No problem! We offer a variety of services to meet your needs. Now you can get your grocery shopping needs in one place, all from the convenience of a web browser. From browsing and shopping, to payments and delivery, we'll handle it all. </p>
+                    <p>{{main_description}}</p>
                     <div class="services-container">
-                        <div class="service">
-                            <h2>Order Management</h2>
-                            <p>Manage and track your orders efficiently with features like placing, updating, and confirming your orders. Stay informed at every stage of your order's journey.</p>
-                        </div>
-
-                        <div class="service">
-                            <h2>Inventory Management</h2>
-                            <p>Efficiently track your products and manage stock levels. Our platform ensures that you always have accurate and real-time information about your inventory.</p>
-                        </div>
-
-                        <div class="service">
-                            <h2>Delivery to Your Destination</h2>
-                            <p>We offer convenient delivery services from your selected branch to your preferred destination, ensuring that your items reach you on time and in perfect condition.</p>
-                        </div>
+                    <div class="service" ng-repeat="service in services">
+                        <h2>{{service.title}}</h2>
+                        <p>{{service.description}}</p>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -963,7 +931,7 @@
 
 
 
-    <script>    
+    <script>           
         var app = angular.module('myApp', ['ngRoute']);
         app.config(function($routeProvider) {
             //routeProvider: used to provide routes to services
@@ -974,13 +942,17 @@
             templateUrl : 'home'})
 
             .when('/aboutus', {
-            templateUrl : 'aboutus'})
+            templateUrl : 'aboutus',
+            controller: 'AboutUsController'
+            })
 
             .when('/reviews', {
             templateUrl : 'reviews'})
 
             .when('/services', {
-            templateUrl : 'services'})
+                templateUrl: 'services',
+                controller: 'ServicesController'
+            })
 
             .when('/signup', {
             templateUrl : 'signup'})
@@ -1016,6 +988,49 @@
             console.log($scope.message);
         });
         */
+
+        app.controller('AboutUsController', function($scope) {
+            // Team member profiles array
+            $scope.profiles = [
+                {
+                    name: "Patricia Delos Santos",
+                    quote: "Blah blah blah",
+                    email: "pdelos@torontomu.ca",
+                    image: "../img/pfp.svg"
+                },
+                {
+                    name: "Genevive Sanchez",
+                    quote: "Blah blah blah",
+                    email: "g1sanchez@torontomu.ca",
+                    image: "../img/pfp.svg"
+                },
+                {
+                    name: "Suboohi Sayeed",
+                    quote: "Blah blah blah",
+                    email: "suboohi.sayeed@torontomu.ca",
+                    image: "../img/pfp.svg"
+                }
+            ];
+        });
+
+        app.controller('ServicesController', function($scope) {
+            $scope.main_description = "Don't want to leave the house? No problem! We offer a variety of services to meet your needs. Now you can get your grocery shopping needs in one place, all from the convenience of a web browser. From browsing and shopping, to payments and delivery, we'll handle it all.";
+            // Services Array
+            $scope.services = [
+                {
+                    title: "Order Management",
+                    description: "Manage and track your orders efficiently with features like placing, updating, and confirming your orders. Stay informed at every stage of your order's journey."
+                },
+                {
+                    title: "Inventory Management",
+                    description: "Efficiently track your products and manage stock levels. Our platform ensures that you always have accurate and real-time information about your inventory."
+                },
+                {
+                    title: "Delivery to Your Destination",
+                    description: "We offer convenient delivery services from your selected branch to your preferred destination, ensuring that your items reach you on time and in perfect condition."
+                }
+            ];
+        });
 
     </script>
 
