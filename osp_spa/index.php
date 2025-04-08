@@ -584,7 +584,7 @@
 
         <body>
             <div class="container-fix">
-                <form action="scripts/signin.php" method="POST" id="user-form" target="_parent">
+                <form action="scripts/signin.php" method="POST" id="user-form" target="signin-message">
                     <legend>Sign In</legend>
 
                     <div class="form-container">
@@ -597,7 +597,7 @@
                     </div> 
 
                     <div class="form-container">
-                        <iframe src="scripts/signup.php" frameborder="0" name="signup-message" style="margin:0; height: 20px; width: 100%;" scrolling="no"></iframe>
+                        <iframe src="scripts/signin.php" frameborder="0" name="signin-message" style="margin:0; height: 30px; width: 100%;" scrolling="no"></iframe>
                     </div>
                     
                     <div class="form-container"> 
@@ -611,7 +611,6 @@
             </div>
         </body>
     </script>
-
 
 
 
