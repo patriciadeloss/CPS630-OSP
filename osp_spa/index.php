@@ -8,7 +8,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"> </script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="../js/validate.js"></script>
+    <script src="scripts/validate.js"></script>
+    <script src="scripts/spa.js"></script>
     <link rel="stylesheet" href="../css/base-style.css">
 </head>
 <body ng-app="myApp">
@@ -33,7 +34,6 @@
     <script type="text/ng-template" id="home">
             
         <head>
-            <link rel="stylesheet" href="../css/index.css">
             <style>
                 .map-image {    
                     margin: auto;
@@ -153,7 +153,6 @@
     <!-- ABOUT US -->
     <script type="text/ng-template" id="aboutus">
         <head>
-            <link rel="stylesheet" href="../css/about.css">
             <style>
                 .profile-card-container {
                     margin: auto;
@@ -245,11 +244,10 @@
                 }
             }
         ?>
-    
-        <head>
-            <link rel="stylesheet" href="../css/reviews.css">
-        </head>
 
+        <head>
+            <link rel="stylesheet" href="../css/"{{css}}>
+        </head>
         <body>
             <section>
                 <article>
@@ -416,53 +414,6 @@
 
     <!-- TYPES OF SERVICES -->
     <script type="text/ng-template" id="services">
-        <head>
-            <style>
-                .services-page .container {
-                    width: 90%;
-                    padding: 20px;
-                    text-align: center;
-                    margin: 0 auto;
-                } 
-                /* Updated Styling of Services */
-                .services-page .services-container {
-                    display: grid;
-                    grid-template-columns: auto auto auto;
-                    column-gap: 20px;
-                    padding: 20px;
-                    text-align: center;
-                    margin: 0 auto;
-                } 
-
-                .services-page .title {
-                    font-size: 2.5rem;
-                    font-weight: 600;
-                    color: #333;
-                    margin-bottom: 20px;
-                }
-
-                .services-page p {
-                    font-size: 1rem;
-                    color: #777;
-                }
-
-                .services-page .service {
-                    background-color: white;
-                    margin: 20px 0;
-                    padding: 20px;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                    border-radius: 8px;
-                }
-
-                .services-page .service h2 {
-                    font-size: 1.5rem;
-                    color: #7FA06D;
-                    margin-bottom: 10px;
-                    width: 100%;
-                    max-width: 100%;
-                }
-            </style>
-        </head>
         <body>
             <div class="services-page">
                 <div class="container">
@@ -508,7 +459,6 @@
     <script type="text/ng-template" id="signup">
 
         <head>
-            <link rel="stylesheet" href="../css/forms.css">
             <style>
                 .container-fix {
                     margin: auto;
@@ -604,7 +554,6 @@
     <script type="text/ng-template" id="signin">
 
         <head>
-            <link rel="stylesheet" href="../css/forms.css">
             <style>
                 .container-fix {
                     margin: auto;
@@ -660,9 +609,6 @@
 
     <!-- CART -->
     <script type="text/ng-template" id="cart">
-        <head>
-            <link rel="stylesheet" href="../css/cart-style.css">
-        </head>
         <div class="container">
             <a href="#!home">Back</a>
             <h1>Your Shopping Cart</h1>
@@ -950,74 +896,6 @@
 
     </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <script>    
-        var app = angular.module('myApp', ['ngRoute']);
-        app.config(function($routeProvider) {
-            //routeProvider: used to provide routes to services
-            $routeProvider
-            //change controller and template based on route
-            .when('/home', {
-            //templateUrl to link to ID of template
-            templateUrl : 'home'})
-
-            .when('/aboutus', {
-            templateUrl : 'aboutus'})
-
-            .when('/reviews', {
-            templateUrl : 'reviews'})
-
-            .when('/services', {
-            templateUrl : 'services'})
-
-            .when('/signup', {
-            templateUrl : 'signup'})
-
-            .when('/signin', {
-            templateUrl : 'signin'})
-
-            .when('/logout', {
-            templateUrl : 'logout'})
-
-            .when('/search', {
-            templateUrl : 'search'})
-
-            .when('/cart', {
-            templateUrl : 'cart'})
-
-            .when('/map', {
-            templateUrl : 'map'})
-
-            .when('/payments', {
-            templateUrl : 'payments'})
-
-            .when('/confirmation', {
-            templateUrl : 'confirmation'})
-
-            .otherwise({redirectTo: '/home'});
-        });
-        
-        /*
-        app.controller('HomeController', function($scope) {
-            $scope.message = '<h1>Hello World!</h1>';
-            //$scope.message = 'Hello from HomeController!';
-            console.log($scope.message);
-        });
-        */
-
-    </script>
 
 </body>
 </html>
