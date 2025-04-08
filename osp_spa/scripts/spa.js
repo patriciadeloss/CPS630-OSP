@@ -16,16 +16,31 @@ app.controller('ServicesController', function($scope) {
     link.type = 'text/css';
     link.href = '../css/services.css';  
     document.head.appendChild(link);
+
+    $scope.main_description = "Don't want to leave the house? No problem! We offer a variety of services to meet your needs. Now you can get your grocery shopping needs in one place, all from the convenience of a web browser. From browsing and shopping, to payments and delivery, we'll handle it all.";
+    // Services Array
+    $scope.services = [
+        {
+            title: "Order Management",
+            description: "Manage and track your orders efficiently with features like placing, updating, and confirming your orders. Stay informed at every stage of your order's journey."
+        },
+        {
+            title: "Inventory Management",
+            description: "Efficiently track your products and manage stock levels. Our platform ensures that you always have accurate and real-time information about your inventory."
+        },
+        {
+            title: "Delivery to Your Destination",
+            description: "We offer convenient delivery services from your selected branch to your preferred destination, ensuring that your items reach you on time and in perfect condition."
+        }
+    ];
 });
 
 app.controller('ReviewsController', function($scope) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.type = 'text/css';
-    link.href = '../css/reviews.css';  
-    console.log(link);
-    $scope.csslink = link;
-    $scope.css = "reviews.css";
+    link.href = '../css/reviews.css';
+    $scope.css = link;
 });
 
 app.controller('AboutUsController', function($scope) {
@@ -34,6 +49,28 @@ app.controller('AboutUsController', function($scope) {
     link.type = 'text/css';
     link.href = '../css/about.css';  
     document.head.appendChild(link);
+
+    // Team member profiles array
+    $scope.profiles = [
+        {
+            name: "Patricia Delos Santos",
+            quote: "Blah blah blah",
+            email: "pdelos@torontomu.ca",
+            image: "../img/pfp.svg"
+        },
+        {
+            name: "Genevive Sanchez",
+            quote: "Blah blah blah",
+            email: "g1sanchez@torontomu.ca",
+            image: "../img/pfp.svg"
+        },
+        {
+            name: "Suboohi Sayeed",
+            quote: "Blah blah blah",
+            email: "suboohi.sayeed@torontomu.ca",
+            image: "../img/pfp.svg"
+        }
+    ];
 });
 
 

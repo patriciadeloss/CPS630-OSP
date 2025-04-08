@@ -48,11 +48,12 @@
             ob_end_flush();
 
             if ($account_type == 0) {
-                header("Location: ../pages/admin.php");
+                $redirect =  "../pages/admin.php";
             } else {
-                header("Location: ../index.php");
+                $redirect = "../index.php";
             }
-            exit();
+            //redirects to the appropriate page
+            echo '<script>window.top.location.href = "' . $redirect . '";</script>';
         }
     }
 ?>

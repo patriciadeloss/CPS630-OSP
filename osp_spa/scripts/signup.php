@@ -26,17 +26,15 @@
 
             $validateUser = validateUser($login_id,$password);
 
-            if ($validateUser === true) { 
-                echo '<p style="color: red; text-align: center;">You already have an account. Please <a href="../osp_spa/osp_spa.php#!/signin" target="_top">sign in</a>.</p>';
-            }
-            else if ($validateUser === false) {
+            if ($validateUser === true) {
+                echo '<p style="color: red; text-align: center;">You already have an account. Please <a href="../index.php#!/signin" target="_top">sign in</a>.</p>';
+            } else if ($validateUser === false) {
                 insertUser($name, $email, $tel_no, $login_id, $password, $user_role);
-                echo '<p style="color: green; text-align: center;">You have created an account. Please <a href="../osp_spa/index.php#!/signin" target="_top">sign in</a>.</p>';
+                echo '<p style="color: green; text-align: center;">You have created an account. Please <a href="../index.php#!/signin" target="_top">sign in</a>.</p>';
                 exit();
             }
         }
     ?>
 </body>
 </html>
-
 

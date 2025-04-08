@@ -1,2 +1,2 @@
 # CPS630-OSP
-Github Repository for Online Service Platform Project for CPS 630 - Web Applications
+- pages/ contains the MPA (Multiple Page Architecture) implementation and osp_spa/ contains the SPA (Single Page Architecture) implementation
