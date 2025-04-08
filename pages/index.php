@@ -2,6 +2,8 @@
     session_start();
     include("header.php"); 
     include("../external-php-scripts/database.php"); 
+    /* Uncomment the line directly below if the database tables haven't been created and populated */
+    // include("../external-php-scripts/tables.php"); 
 
     // Check if the form is submitted
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
